@@ -14,35 +14,38 @@
 
 <body>
     <div class="outline">
-        <div class="panel">display</div>
-        <div class="row">
-            <button class="normal">AC</button>
-            <button class="normal toggle">+/-</button>
-            <button class="normal"><i class="fal fa-percentage"></i></button>
-            <button class="normal last" value="/"><i class="fas fa-divide"></i></button>
+        <div class="panel">
+            <div class="pre" data-pre></div>
+            <div class="cur" data-cur></div>
         </div>
         <div class="row">
-            <button class="normal" value="7">7</button>
-            <button class="normal" value="8">8</button>
-            <button class="normal" value="9">9</button>
-            <button class="normal last" value="x"><i class="fas fa-times"></i></button>
+            <button class="normal" data-clear>AC</button>
+            <button class="normal" data-toggle>+/-</button>
+            <button class="normal" data-percen><i class="fal fa-percentage"></i></button>
+            <button class="normal last" data-operator value="/"><i class="fas fa-divide"></i></button>
         </div>
         <div class="row">
-            <button class="normal" value="4">4</button>
-            <button class="normal" value="5">5</button>
-            <button class="normal" value="6">6</button>
-            <button class="normal last" value="-"><i class="fas fa-minus"></i></button>
+            <button class="normal" data-num value="7">7</button>
+            <button class="normal" data-num value="8">8</button>
+            <button class="normal" data-num value="9">9</button>
+            <button class="normal last" data-operator value="x"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="row">
+            <button class="normal" data-num value="4">4</button>
+            <button class="normal" data-num value="5">5</button>
+            <button class="normal" data-num value="6">6</button>
+            <button class="normal last" data-operator value="-"><i class="fas fa-minus"></i></button>
         </div>
         <div class="row">
             <button class="normal" value="1">1</button>
-            <button class="normal" value="2">2</button>
-            <button class="normal" value="3">3</button>
-            <button class="normal last" value="+">+</button>
+            <button class="normal" data-num value="2">2</button>
+            <button class="normal" data-num value="3">3</button>
+            <button class="normal last" data-operator value="+">+</button>
         </div>
         <div class="row">
-            <button class="wide bo ttom-left" value="0">0</button>
-            <button class="normal" value=".">.</button>
-            <button class="normal  bottom-right last"><i class="fas fa-equals"></i></button>
+            <button class="wide bo ttom-left" data-num value="0">0</button>
+            <button class="normal" data-num value=".">.</button>
+            <button class="normal  bottom-right last" data-equal><i class="fas fa-equals"></i></button>
         </div>
     </div>
     <script src="./app.js"></script>
