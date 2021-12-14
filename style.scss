@@ -1,0 +1,84 @@
+@mixin size($w, $h){
+  width: $w;
+  height: $h;
+}
+$font-size: 10px;
+@import url('https://fonts.googleapis.com/css2?family=Amiri&family=Noto+Sans+TC&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  html,
+  body {
+    @include size (100%, 100vh);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+    font-family: 'Amiri', serif;
+    font-family: 'Noto Sans TC', sans-serif;
+  }
+
+  html {
+    background-color: aqua;
+  }
+
+  i{
+    pointer-events: none;
+  }
+
+  .outline{
+    @include size (30%, 40%);
+    min-width: 250px;
+    min-height: 300px;
+  }
+  
+  .panel{
+    @include size (auto, 25%);
+    display: flex;
+    min-height: 75px;
+    background-color: black;
+    color: whitesmoke;
+    font-size: 4rem;
+    align-items: center;
+    justify-content: end;
+    padding: 1rem;
+    border-radius: 8px 8px 0 0 ;
+  }
+
+  .row{
+    display: flex;
+  }
+
+  button{
+    border-color: rgb(249, 249, 249);
+  }
+
+  .normal{
+    flex: 1 1 20%;
+    padding: 1rem;
+  }
+
+  .wide{
+    flex: 2 2 40%;
+    padding: 1rem;
+  }
+
+    
+  .bottom-left{
+    border-radius: 0 0 0 8px;
+  }
+
+  .bottom-right{
+    border-radius: 0 0 8px 0;
+  }
+  
+  .last{
+    background-color: #FF9500;
+    color: whitesmoke;
+  }
+  
+  
