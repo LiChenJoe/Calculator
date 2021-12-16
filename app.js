@@ -144,7 +144,6 @@ class Calculator {
         } else if (this.cur === "" && this.operator === "" && this.pre !== "") {
             this.pre = this.pre.toString().slice(0, -1);
         }
-        console.log("uu");
         this.upDate();
     }
 
@@ -165,7 +164,6 @@ class Calculator {
         this.preNum.innerText = this.pre + this.operator;
         this.curNum.innerText = this.cur;
         if (this.curNum.innerText.length < 11) {
-            console.log("4rem", curNum);
             curNum.style.fontSize = "4rem";
             return;
         } else if (this.curNum.innerText.length < 16 && this.curNum.innerText.length > 11) {
