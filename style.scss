@@ -37,23 +37,26 @@ $font-size: 10px;
   }
   
   .panel{
-    @include size (auto, 25%);
+    @include size (auto, auto);
     display: flex;
     flex-direction: column;
     min-height: 75px;
-    background-color: black;
-    color: whitesmoke;
-    align-items: flex-end;
+    background-color:rgb(35, 35, 35);
+    color: azure;
     justify-content:space-around;
     padding: 1rem;
     border-radius: 8px 8px 0 0 ;
     color: whitesmoke;
 
     .pre {
+      text-align: right;
+      width: 95%;
       font-size: 1.2rem;
     }
     
     .cur{
+      text-align: right;
+      width: 95%;
       font-size: 2.8rem;
     }
   }
@@ -62,10 +65,24 @@ $font-size: 10px;
     display: flex;
   }
 
-  button{
-    border-color: rgb(249, 249, 249);
-  }
+  
 
+
+  button{
+    padding: 3px;
+    border: 1px solid #CCC;
+}
+
+button.last:focus , button[aria-pressed="true"] {
+  background-color:#ffc677;
+  color: rgb(40, 40, 40);
+}
+
+button[data-num]:focus,button[data-num][aria-pressed="true"] {
+  background-color:rgb(178, 177, 177);
+  color: rgb(40, 40, 40);
+}
+  
   .normal{
     flex: 1 1 20%;
     padding: 1rem;

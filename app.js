@@ -15,36 +15,46 @@ class Calculator {
     addNum(number) {
         if (number === "." && this.cur.includes(".")) return;
         this.cur = this.cur.toString() + number.toString();
-        if (this.pre !== "") {
+        if (this.pre === "" && this.cur !== "" && this.operator === "-") {
+            this.cur = "-" + this.cur;
+            this.operator = "";
+            this.upDate();
+            console.log("operate: ", this.operator);
+            return;
+        } else if (this.pre !== "") {
             this.upDate();
         }
         console.log(number + "number" + this.cur, this);
     }
 
     pressOperate(operator) {
-        if (this.pre != "" && this.cur == "") {
+        if (this.pre === "" && this.cur === "" && this.operator === "" && operator === "-") {
+            this.operator = operator;
+            console.log("operate: ", this.operator);
+            return;
+        } else if (this.pre != "" && this.cur == "") {
             this.operator = operator;
             this.upDate();
-        } else if (!isNaN(Number(this.pre)) && (this.operator == "+" || this.operator == "-") && (operator == "*" || operator == "/") && (this.cru != "")) {
+        } else if (!isNaN(Number(this.pre)) && (this.cur != "") && (this.operator == "+" || this.operator == "-") && (operator == "*" || operator == "/")) {
             this.pre += this.operator + this.cur;
             this.operator = operator;
             this.cur = "";
             this.upDate();
-        } else if (!isNaN(Number(this.pre)) && (this.operator == "*" || this.operator == "/") && (operator == "+" || operator == "-") && (this.cru != "")) {
+        } else if (!isNaN(Number(this.pre)) && (this.operator == "*" || this.operator == "/") && (operator == "+" || operator == "-") && (this.cur != "")) {
             console.log("成家");
             this.compute();
             this.operator = operator;
             this.pre = this.cur;
             this.cur = "";
             this.upDate();
-        } else if (!isNaN(Number(this.pre)) && (this.operator == "+" || this.operator == "-") && (operator == "+" || operator == "-") && (this.cru != "")) {
+        } else if (!isNaN(Number(this.pre)) && (this.operator == "+" || this.operator == "-") && (operator == "+" || operator == "-") && (this.cur != "")) {
             console.log(!isNaN(Number(this.pre), "pre是數字 加減"));
             this.compute();
             this.operator = operator;
             this.pre = this.cur;
             this.cur = "";
             this.upDate();
-        } else if (!isNaN(Number(this.pre)) && (this.operator == "*" || this.operator == "/") && (operator == "*" || operator == "/") && (this.cru != "")) {
+        } else if (!isNaN(Number(this.pre)) && (this.operator == "*" || this.operator == "/") && (operator == "*" || operator == "/") && (this.cur != "")) {
             console.log(!isNaN(Number(this.pre), "pre是數字 乘除"));
             this.compute();
             this.operator = operator;
@@ -82,8 +92,11 @@ class Calculator {
                         this.pre = Number(sliceOut) * Number(this.cur);
                     } else if (ope == "/" && operator == "/") {
                         this.pre = Number(sliceOut) / Number(this.cur);
+                    } else if (operator == "") {
+                        console.log("d ", ope);
+                        this.pre = Number(sliceOut) + ope + Number(this.cur);
                     } else {
-                        console.log("d ", operator);
+                        console.log("e ", operator);
                         this.pre = sliceOut + ope + this.cur;
                     }
                     if (operator !== undefined) {
@@ -93,17 +106,22 @@ class Calculator {
                     }
                 }
             }
+        } else if (this.pre === "" && this.cur === "" && this.operator === "-" && operator !== "") {
+            this.operator = "";
+            operator = "";
+            return;
         } else {
             let plus = this.cur;
             this.compute();
             console.log("Hi", "com", plus)
-            if (this.pre != "" && this.cru != "") {
-                console.log("Hi", this.pre, this.cru);
-            } else if (this.pre != "" && this.cru == undefined) {
-                this.cru = plus;
-                console.log("Hi", this.pre, this.cru);
+            if (this.pre != "" && this.cur != "") {
+                console.log("Hi", this.pre, this.cur);
+            } else if (this.pre != "" && this.cur == undefined) {
+                this.cur = plus;
+                console.log("bitch", this.pre, this.cur);
                 this.compute();
             }
+
             this.pre = this.cur;
             this.cur = "";
             console.log("Hi");
@@ -139,14 +157,57 @@ class Calculator {
         }
         console.log("compute() 答 " + "this.pre :" + this.pre + " operator: " + this.operator + " this.cur: " + this.cur, this);
         this.cur = result;
-        console.log(this.cur);
+        if (this.cur == 0) {
+            this.cur = "0";
+        }
+        console.log(this.cur, this.operator);
+    }
+
+    delete() {
+        console.log("this.cur ", this.cur);
+        if (this.cur !== "") {
+            this.cur = this.cur.slice(0, -1);
+            this.upDate();
+        } else if (this.operator !== "") {
+            this.operator = "";
+            this.upDate();
+        } else if (this.cur === "" && this.operator === "" && this.pre !== "") {
+            this.pre = this.pre.slice(0, -1);
+            this.upDate();
+        }
+    }
+
+    toggle() {
+        console.log("(this.cur)", (this.cur), "-(this.cur)", -(this.cur), "(this.cur).toString()", -(this.cur), "(Math.abs(this.cur)).toString() ", (Math.abs(this.cur)).toString());
+        if (this.cur !== "") {
+            console.log("進來了");
+            if (this.cur == - Math.abs(this.cur)) {
+                this.cur = this.cur.slice(1, this.cur.length);
+                console.log("負變正", this.cur.length);
+                return;
+            } else if (this.cur == Math.abs(this.cur)) {
+                this.cur = "-" + this.cur.toString();
+                console.log("正變負");
+                return;
+            }
+        }
+
     }
 
     upDate() {
         console.log(this.pre, this.cur)
         this.preNum.innerText = this.pre + this.operator;
         this.curNum.innerText = this.cur;
-        console.log("update() 答 " + "this.pre :" + this.pre + " this.cur: " + " operator: " + this.operator + this.cur, this);
+        if (this.curNum.innerText.length < 16 && this.curNum.innerText.length > 12) {
+            curNum.style.fontSize = "1.8rem";
+            console.log("太大", this.curNum.innerText.length);
+        } else if (this.curNum.innerText.length > 15 || this.preNum.innerText.length > 20) {
+            console.log("OMG", this.curNum.innerText.length, this.preNum);
+            curNum.style.fontSize = "1.8rem";
+            curNum.style.wordWrap = "break-word";
+            preNum.style.wordWrap = "break-word";
+        }
+        console.log("update() 答 " + "this.curNum:" + this.curNum.innerText + " this.cur: ", this.cur, " operator: " + this.operator, this);
     }
 }
 
@@ -158,9 +219,8 @@ const clear = document.querySelector('[data-clear]');
 const dataDelete = document.querySelector('[data-delete]');
 const dataToggle = document.querySelector('[data-toggle]');
 const dataEqual = document.querySelector('[data-equal]');
-
-
 const calculator = new Calculator(preNum, curNum);
+
 numButton.forEach(num => {
     num.addEventListener("click", () => {
         calculator.addNum(num.innerText);
@@ -178,6 +238,7 @@ opeButton.forEach(ope => {
             calculator.pressOperate(ope.value);
             console.log("calculator.cur ", calculator.cur, " ope: ", ope.value, "calculator.operator", calculator.operator, "opeSecond");
         }
+        console.log("push");
     })
 })
 
@@ -200,10 +261,121 @@ dataEqual.addEventListener("click", () => {
         calculator.operator = "";
     }
     calculator.upDate();
-
 })
 
 clear.addEventListener("click", () => {
     calculator.clear();
     calculator.upDate();
+    for (let i = 0; i < 4; i++) {
+        opeButton[i].setAttribute("aria-pressed", "false");
+        dataEqual.setAttribute("aria-pressed", "false");
+    }
+})
+
+dataDelete.addEventListener("click", () => {
+    calculator.delete();
+    if (calculator.operator == "") {
+        console.log(calculator.operator == "");
+        for (let i = 0; i < 4; i++) {
+            opeButton[i].setAttribute("aria-pressed", "false");
+            dataEqual.setAttribute("aria-pressed", "false");
+        }
+    }
+})
+
+dataToggle.addEventListener("click", () => {
+    console.log("innnnn d")
+    calculator.toggle();
+    calculator.upDate();
+})
+
+window.addEventListener('keypress', (e) => {
+    let keyBoardWord = String.fromCharCode(e.which);
+
+    if (e.which == 61) {
+        if (!isNaN(Number(this.pre))) {
+            calculator.compute();
+        }
+        calculator.pressOperate(this.operator);
+        if (calculator.cur == "" && calculator.pre != "") {
+            calculator.cur = calculator.pre;
+            calculator.pre = "";
+            calculator.operator = "";
+        } else if (calculator.cur == "" && calculator.operator != "" && calculator.pre != "") {
+            calculator.cur = calculator.pre;
+            console.log("HH");
+            calculator.compute();
+        } else {
+            calculator.pre = "";
+            calculator.operator = "";
+        }
+        console.log("a", e.which);
+        calculator.upDate();
+        for (let i = 0; i < 4; i++) {
+            opeButton[i].setAttribute("aria-pressed", "false");
+        }
+        dataEqual.setAttribute("aria-pressed", "true");
+    } else if (keyBoardWord > -1 && keyBoardWord < 10 && keyBoardWord != "\r") {
+        calculator.addNum(keyBoardWord);
+        for (let i = 0; i < 11; i++) {
+            numButton[i].setAttribute("aria-pressed", "false");
+            console.log(i, opeButton[i], keyBoardWord, "看看");
+            if (numButton[i].value === keyBoardWord) {
+                console.log(numButton[i].value == keyBoardWord);
+                numButton[i].setAttribute("aria-pressed", "true");
+            }
+        }
+        console.log("b");
+        calculator.upDate();
+    }
+    else if (keyBoardWord == '.') {
+        console.log("c", keyBoardWord);
+        calculator.addNum(keyBoardWord);
+        calculator.upDate();
+        for (let i = 0; i < 11; i++) {
+            numButton[i].setAttribute("aria-pressed", "false");
+            console.log(i, opeButton[i], keyBoardWord, "看看");
+            if (numButton[i].value === keyBoardWord) {
+                console.log(numButton[i].value == keyBoardWord);
+                numButton[i].setAttribute("aria-pressed", "true");
+            }
+        }
+    }
+    else if (e.which == 42 || e.which == 43 || e.which == 45 || e.which == 47) {
+        calculator.pressOperate(keyBoardWord);
+        if (calculator.cur === "" && keyBoardWord !== calculator.operator) {
+            calculator.pressOperate(keyBoardWord);
+            console.log(opeButton[1], "  opeButton.nodeList");
+            for (let i = 0; i < 4; i++) {
+                opeButton[i].setAttribute("aria-pressed", "false");
+                dataEqual.setAttribute("aria-pressed", "false");
+                console.log(i, opeButton[i], e.key, "看看");
+                if (opeButton[i].value === e.key) {
+                    console.log(opeButton[i].value == e.key);
+                    opeButton[i].setAttribute("aria-pressed", "true");
+                }
+            }
+        }
+    }
+})
+
+const log = document.getElementById('log');
+document.addEventListener('keyup', (e) => {
+    if (e.keyCode === 27) {
+        calculator.clear();
+        calculator.upDate();
+        for (let i = 0; i < 4; i++) {
+            opeButton[i].setAttribute("aria-pressed", "false");
+            dataEqual.setAttribute("aria-pressed", "false");
+        }
+    } else if (e.keyCode === 8) {
+        calculator.delete();
+        if (calculator.operator == "") {
+            console.log(calculator.operator == "");
+            for (let i = 0; i < 4; i++) {
+                opeButton[i].setAttribute("aria-pressed", "false");
+                dataEqual.setAttribute("aria-pressed", "false");
+            }
+        }
+    }
 })
