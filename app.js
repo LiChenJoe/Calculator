@@ -163,13 +163,22 @@ class Calculator {
     upDate() {
         this.preNum.innerText = this.pre + this.operator;
         this.curNum.innerText = this.cur;
-        if (this.curNum.innerText.length < 11) {
+        console.log("j9", this.curNum.innerText.length)
+        if (this.curNum.innerText.length < 12) {
+            console.log("j10");
             curNum.style.fontSize = "4rem";
             return;
-        } else if (this.curNum.innerText.length < 16 && this.curNum.innerText.length > 11) {
-            curNum.style.fontSize = "1.8rem";
-        } else if (this.curNum.innerText.length > 15 || this.preNum.innerText.length > 20) {
-            curNum.style.fontSize = "1.8rem";
+        } else if (this.curNum.innerText.length < 14 && this.curNum.innerText.length > 11) {
+            console.log("j11");
+            curNum.style.fontSize = "3rem";
+            return;
+        } else if (this.curNum.innerText.length > 13) {
+            console.log("j11");
+            curNum.style.wordWrap = "break-word";
+            preNum.style.wordWrap = "break-word";
+            return;
+        } else if (this.preNum.innerText.length > 13) {
+            curNum.style.fontSize = "2.5rem";
             curNum.style.wordWrap = "break-word";
             preNum.style.wordWrap = "break-word";
         }
