@@ -156,6 +156,7 @@ class Calculator {
                 this.cur = this.cur.slice(1, this.cur.length);
                 return;
             } else if (this.cur == Math.abs(this.cur)) {
+                this.cur = "-" + this.cur;
                 return;
             }
         }
