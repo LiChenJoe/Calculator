@@ -19,9 +19,8 @@ class Calculator {
             this.operator = "";
             this.upDate();
             return;
-        } else if (this.pre !== "") {
-            this.upDate();
         }
+        this.upDate();
     }
 
     pressOperate(operator) {
@@ -140,14 +139,13 @@ class Calculator {
     delete() {
         if (this.cur !== "") {
             this.cur = this.cur.toString().slice(0, -1);
-            this.upDate();
         } else if (this.operator !== "") {
             this.operator = "";
-            this.upDate();
         } else if (this.cur === "" && this.operator === "" && this.pre !== "") {
             this.pre = this.pre.toString().slice(0, -1);
-            this.upDate();
         }
+        console.log("uu");
+        this.upDate();
     }
 
     toggle() {
@@ -166,14 +164,16 @@ class Calculator {
     upDate() {
         this.preNum.innerText = this.pre + this.operator;
         this.curNum.innerText = this.cur;
-        if (this.curNum.innerText.length < 16 && this.curNum.innerText.length > 11) {
+        if (this.curNum.innerText.length < 11) {
+            console.log("4rem", curNum);
+            curNum.style.fontSize = "4rem";
+            return;
+        } else if (this.curNum.innerText.length < 16 && this.curNum.innerText.length > 11) {
             curNum.style.fontSize = "1.8rem";
         } else if (this.curNum.innerText.length > 15 || this.preNum.innerText.length > 20) {
             curNum.style.fontSize = "1.8rem";
             curNum.style.wordWrap = "break-word";
             preNum.style.wordWrap = "break-word";
-        } else {
-            curNum.style.fontSize = "4rem;";
         }
     }
 }
@@ -237,7 +237,6 @@ dataEqual.addEventListener("click", () => {
     } else if (calculator.cur == "" && calculator.operator != "" && calculator.pre != "") {
         calculator.cur = calculator.pre;
         calculator.compute();
-
     } else {
         calculator.pre = "";
         calculator.operator = "";
@@ -266,6 +265,7 @@ clear.addEventListener("click", () => {
 
 dataDelete.addEventListener("click", () => {
     calculator.delete();
+    calculator.upDate();
     dataEqual.setAttribute("aria-pressed", "false");
     if (calculator.operator == "") {
         for (let i = 0; i < 4; i++) {
@@ -366,6 +366,7 @@ document.addEventListener('keyup', (e) => {
         }
     } else if (e.keyCode === 8) {
         calculator.delete();
+        calculator.upDate();
         dataEqual.setAttribute("aria-pressed", "false");
         if (calculator.operator == "") {
             for (let i = 0; i < 4; i++) {
