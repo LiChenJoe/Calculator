@@ -225,9 +225,9 @@ dataEqual.addEventListener("click", () => {
 clear.addEventListener("click", () => {
     calculator.clear();
     calculator.upDate();
+    dataEqual.setAttribute("aria-pressed", "false");
     for (let i = 0; i < 4; i++) {
         opeButton[i].setAttribute("aria-pressed", "false");
-        dataEqual.setAttribute("aria-pressed", "false");
     }
     for (let j = 0; j < 11; j++) {
         numButton[j].setAttribute("aria-pressed", "false");
@@ -236,10 +236,10 @@ clear.addEventListener("click", () => {
 
 dataDelete.addEventListener("click", () => {
     calculator.delete();
+    dataEqual.setAttribute("aria-pressed", "false");
     if (calculator.operator == "") {
         for (let i = 0; i < 4; i++) {
             opeButton[i].setAttribute("aria-pressed", "false");
-            dataEqual.setAttribute("aria-pressed", "false");
         }
         for (let j = 0; j < 11; j++) {
             numButton[j].setAttribute("aria-pressed", "false");
@@ -279,16 +279,16 @@ window.addEventListener('keypress', (e) => {
             numButton[j].setAttribute("aria-pressed", "false");
         }
         dataEqual.setAttribute("aria-pressed", "true");
-    } else if (keyBoardWord > -1 && keyBoardWord < 10 && keyBoardWord != "\r") {
+    } else if (keyBoardWord > -1 && keyBoardWord < 11 && keyBoardWord != "\r") {
         calculator.addNum(keyBoardWord);
-        for (let j = 0; j < 4; j++) {
-            opeButton[j].setAttribute("aria-pressed", "false");
+        for (let i = 0; i < 4; i++) {
+            opeButton[i].setAttribute("aria-pressed", "false");
         }
-        for (let i = 0; i < 11; i++) {
-            numButton[i].setAttribute("aria-pressed", "false");
-            dataEqual.setAttribute("aria-pressed", "false");
-            if (numButton[i].value === keyBoardWord) {
-                numButton[i].setAttribute("aria-pressed", "true");
+        dataEqual.setAttribute("aria-pressed", "false");
+        for (let j = 0; j < 11; j++) {
+            numButton[j].setAttribute("aria-pressed", "false");
+            if (numButton[j].value === keyBoardWord) {
+                numButton[j].setAttribute("aria-pressed", "true");
             }
         }
         calculator.upDate();
@@ -296,27 +296,28 @@ window.addEventListener('keypress', (e) => {
     else if (keyBoardWord == '.') {
         calculator.addNum(keyBoardWord);
         calculator.upDate();
-        for (let i = 0; i < 11; i++) {
-            numButton[i].setAttribute("aria-pressed", "false");
-            dataEqual.setAttribute("aria-pressed", "false");
-            if (numButton[i].value === keyBoardWord) {
-                numButton[i].setAttribute("aria-pressed", "true");
+        dataEqual.setAttribute("aria-pressed", "false");
+        for (let j = 0; j < 11; j++) {
+            numButton[j].setAttribute("aria-pressed", "false");
+            if (numButton[j].value === keyBoardWord) {
+                numButton[j].setAttribute("aria-pressed", "true");
             }
         }
     }
     else if (e.which == 42 || e.which == 43 || e.which == 45 || e.which == 47) {
         calculator.pressOperate(keyBoardWord);
+        console.log(calculator.cur === "" && keyBoardWord !== calculator.operator, "keyBoardWord", keyBoardWord, " opeButton[i]", e);
         if (calculator.cur === "" && keyBoardWord !== calculator.operator) {
             calculator.pressOperate(keyBoardWord);
-            for (let j = 0; j < 11; j++) {
-                numButton[j].setAttribute("aria-pressed", "false");
-            }
-            for (let i = 0; i < 4; i++) {
-                opeButton[i].setAttribute("aria-pressed", "false");
-                dataEqual.setAttribute("aria-pressed", "false");
-                if (opeButton[i].value === e.key) {
-                    opeButton[i].setAttribute("aria-pressed", "true");
-                }
+        }
+        for (let j = 0; j < 11; j++) {
+            numButton[j].setAttribute("aria-pressed", "false");
+        }
+        dataEqual.setAttribute("aria-pressed", "false");
+        for (let i = 0; i < 4; i++) {
+            opeButton[i].setAttribute("aria-pressed", "false");
+            if (opeButton[i].value === e.key) {
+                opeButton[i].setAttribute("aria-pressed", "true");
             }
         }
     }
@@ -327,19 +328,19 @@ document.addEventListener('keyup', (e) => {
     if (e.keyCode === 27) {
         calculator.clear();
         calculator.upDate();
+        dataEqual.setAttribute("aria-pressed", "false");
         for (let i = 0; i < 4; i++) {
             opeButton[i].setAttribute("aria-pressed", "false");
-            dataEqual.setAttribute("aria-pressed", "false");
         }
         for (let j = 0; j < 11; j++) {
             numButton[j].setAttribute("aria-pressed", "false");
         }
     } else if (e.keyCode === 8) {
         calculator.delete();
+        dataEqual.setAttribute("aria-pressed", "false");
         if (calculator.operator == "") {
             for (let i = 0; i < 4; i++) {
                 opeButton[i].setAttribute("aria-pressed", "false");
-                dataEqual.setAttribute("aria-pressed", "false");
             }
             for (let j = 0; j < 11; j++) {
                 numButton[j].setAttribute("aria-pressed", "false");
