@@ -287,6 +287,13 @@ dataDelete.addEventListener("click", () => {
 dataToggle.addEventListener("click", () => {
     calculator.toggle();
     calculator.upDate();
+    dataEqual.setAttribute("aria-pressed", "false");
+    for (let i = 0; i < 4; i++) {
+        opeButton[i].setAttribute("aria-pressed", "false");
+    }
+    for (let j = 0; j < 11; j++) {
+        numButton[j].setAttribute("aria-pressed", "false");
+    }
 })
 
 window.addEventListener('keypress', (e) => {
@@ -385,3 +392,4 @@ document.addEventListener('keyup', (e) => {
         }
     }
 })
+
