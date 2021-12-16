@@ -139,13 +139,13 @@ class Calculator {
 
     delete() {
         if (this.cur !== "") {
-            this.cur = this.cur.slice(0, -1);
+            this.cur = this.cur.toString().slice(0, -1);
             this.upDate();
         } else if (this.operator !== "") {
             this.operator = "";
             this.upDate();
         } else if (this.cur === "" && this.operator === "" && this.pre !== "") {
-            this.pre = this.pre.slice(0, -1);
+            this.pre = this.pre.toString().slice(0, -1);
             this.upDate();
         }
     }
@@ -166,12 +166,14 @@ class Calculator {
     upDate() {
         this.preNum.innerText = this.pre + this.operator;
         this.curNum.innerText = this.cur;
-        if (this.curNum.innerText.length < 16 && this.curNum.innerText.length > 12) {
+        if (this.curNum.innerText.length < 16 && this.curNum.innerText.length > 11) {
             curNum.style.fontSize = "1.8rem";
         } else if (this.curNum.innerText.length > 15 || this.preNum.innerText.length > 20) {
             curNum.style.fontSize = "1.8rem";
             curNum.style.wordWrap = "break-word";
             preNum.style.wordWrap = "break-word";
+        } else {
+            curNum.style.fontSize = "4rem;";
         }
     }
 }
