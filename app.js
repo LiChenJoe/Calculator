@@ -6,15 +6,22 @@ class Calculator {
     }
 
     clear() {
+        console.log(this.pre, this.cur, "a", this.preNum);
         this.pre = "";
         this.cur = "";
         this.operator = "";
+        console.log(this.pre, this.cur, "n", this.preNum);
     }
 
     addNum(number) {
         if (number === "." && this.cur.includes(".")) return;
+        if (this.curNum.innerText == "-0") {
+            console.log(this.cur, "一");
+            this.cur = "-";
+            console.log(this.cur, "二");
+        }
         this.cur = this.cur.toString() + number.toString();
-        if (this.pre === "" && this.cur !== "" && this.operator === "-") {
+        if (this.pre === "" && this.cur !== "" && (this.operator === "-")) {
             this.cur = "-" + this.cur;
             this.operator = "";
             this.upDate();
@@ -54,13 +61,26 @@ class Calculator {
             this.cur = "";
             this.upDate();
         } else if (isNaN(Number(this.pre))) {
+            this.save = "";
+            if (this.pre[0] === "-") {
+                this.save = "-";
+                console.log(this.save);
+                this.pre = this.pre.slice(1, this.pre.length);
+            }
             for (let i = 0; i < this.pre.length; i++) {
                 if (isNaN(this.pre[i])) {
                     let ope = this.pre[i];
+                    console.log(ope, this.operator, operator)
                     let opeIndex = this.pre.indexOf(ope);
                     let sliceOut = this.pre.slice(0, opeIndex);
                     this.pre = this.pre.slice(-(this.pre.length - (sliceOut.length + 1)));
+                    console.log(this.pre, "算錢", this.cur);
                     this.compute();
+                    if (this.save.length > 0) {
+                        console.log("jj", sliceOut, this.cur);
+                        sliceOut = "-" + sliceOut;
+                        this.save = "";
+                    }
                     if (ope == "+" && (operator == "+" || operator == "-" || operator === undefined)) {
                         this.pre = Number(sliceOut) + Number(this.cur);
                         if (operator === undefined) {
@@ -68,11 +88,14 @@ class Calculator {
                             this.pre = "";
                         }
                     } else if (ope == "-" && (operator == "-" || operator == "+" || operator === undefined)) {
+                        console.log(sliceOut, " Number(sliceOut)", Number(sliceOut), this.cur, this.pre);
                         this.pre = Number(sliceOut) - Number(this.cur);
+                        console.log(sliceOut, this.cur, this.pre);
                         if (operator === undefined) {
                             this.cur = this.pre;
                             this.pre = "";
                         }
+                        console.log(sliceOut, this.cur, this.pre);
                     } else if (ope == "*" && operator == "*") {
                         this.pre = Number(sliceOut) * Number(this.cur);
                     } else if (ope == "/" && operator == "/") {
@@ -82,6 +105,7 @@ class Calculator {
                     } else {
                         this.pre = sliceOut + ope + this.cur;
                     }
+                    console.log(sliceOut, this.cur, this.pre);
                     if (operator !== undefined) {
                         this.cur = "";
                         this.operator = "";
@@ -100,20 +124,28 @@ class Calculator {
                 this.cur = plus;
                 this.compute();
             }
-
             this.pre = this.cur;
             this.cur = "";
             this.upDate();
         }
+        if (curNum.classList.length > 1) {
+            curNum.classList.remove("negative");
+            this.upDate();
+        }
+        console.log(this.operator, this.pre);
     }
     compute() {
         let result;
+        console.log(this.cur, this.pre, this.operator);
         let preNumber = parseFloat(this.pre);
         let curNumber = parseFloat(this.cur);
+        console.log(curNumber, preNumber, this.operator);
         if (!isNaN(this.pre)) {
+            console.log("1");
             switch (this.operator) {
                 case "*":
                     result = preNumber * curNumber;
+                    console.log(result);
                     break;
                 case "-":
                     result = preNumber - curNumber;
@@ -128,12 +160,16 @@ class Calculator {
                     return;
             }
         } else {
+            console.log("不會吧");
             this.pressOperate(this.operator);
         }
         this.cur = result;
+        console.log(this.cur);
         if (this.cur == 0) {
+            console.log("fuck off");
             this.cur = "0";
         }
+        console.log(this.cur);
     }
 
     delete() {
@@ -148,32 +184,65 @@ class Calculator {
     }
 
     toggle() {
-        if (this.cur !== "") {
-            if (this.cur == - Math.abs(this.cur)) {
-                this.cur = this.cur.slice(1, this.cur.length);
-                return;
-            } else if (this.cur == Math.abs(this.cur)) {
-                this.cur = "-" + this.cur;
-                return;
-            }
+        console.log("before", curNum.classList.length, this.cur, curNum.classList.length > 1 && this.cur == "");
+        curNum.classList.toggle("negative");
+        console.log("加了", curNum.classList.length, this.cur);
+        if (curNum.classList.length == 1 && this.cur == "") {
+            console.log(curNum.classList.length, this.cur);
+            this.cur = "";
+        } else if (curNum.classList.length == 1 && this.cur == "-") {
+            console.log(curNum.classList.length, this.cur, "l");
+            this.cur = "";
+            return;
+        } else if (curNum.classList.length == 1 && this.cur[0] == "-") {
+            console.log(curNum.classList.length, this.cur, "l");
+            this.cur = this.cur.slice(1, this.cur.length);
+            return;
+        } else if (curNum.classList.length > 1 && this.cur == "-") {
+            this.cur = "0";
+            return;
+        } else if (curNum.classList.length > 1 && this.cur[0] == "-") {
+            this.cur = this.cur.slice(1, this.cur.length);
+            console.log(curNum.classList.length, this.cur, "2");
+            return;
+        } else if (curNum.classList.length > 1 && this.cur == "") {
+            console.log(curNum.classList.length, this.cur, "update");
+            this.cur = "-";
+            this.upDate();
+        } else if (curNum.classList.length > 1) {
+            this.cur = "-" + this.cur;
+            return;
+        } else if (curNum.classList.length == 1) {
+            this.cur = "-" + this.cur;
+            console.log("不服來辯 2");
+            return;
         }
-
+        console.log(dataToggle.classList.length, this.cur);
     }
 
     upDate() {
-        this.preNum.innerText = this.pre + this.operator;
-        this.curNum.innerText = this.cur;
-        console.log("j9", this.curNum.innerText.length)
+        console.log("in in d", this.cur, this.operator, this.pre);
+        if (this.pre == "" && this.cur == "" && this.operator == "") {
+            this.preNum.innerText = "";
+            this.curNum.innerText = "0";
+        } else if (this.cur[0] == "-" && this.operator == "-") {
+            console.log("in");
+            this.operator = "+";
+            this.preNum.innerText = this.pre + this.operator;
+            console.log(curNum.classList.length, this.cur, " this.preNum.innerText", this.preNum.innerText);
+            this.cur = this.cur.slice(1, this.cur.length);
+        } else {
+            this.preNum.innerText = this.pre + this.operator;
+            this.curNum.innerText = this.cur;
+        }
+        console.log("in in d", this.cur[0], this.operator, this.pre, this.preNum.innerText);
         if (this.curNum.innerText.length < 12) {
-            console.log("j10");
             curNum.style.fontSize = "4rem";
             return;
         } else if (this.curNum.innerText.length < 14 && this.curNum.innerText.length > 11) {
-            console.log("j11");
             curNum.style.fontSize = "3rem";
             return;
         } else if (this.curNum.innerText.length > 13) {
-            console.log("j11");
             curNum.style.wordWrap = "break-word";
             preNum.style.wordWrap = "break-word";
             return;
@@ -182,6 +251,7 @@ class Calculator {
             curNum.style.wordWrap = "break-word";
             preNum.style.wordWrap = "break-word";
         }
+        console.log("in in d", this.cur[0], this.operator, this.pre);
     }
 }
 
@@ -212,6 +282,8 @@ numButton.forEach(num => {
         }
     })
 })
+
+window.addEventListener("load", calculator.upDate());
 
 opeButton.forEach(ope => {
     ope.addEventListener("click", () => {
