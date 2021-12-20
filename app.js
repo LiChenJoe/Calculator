@@ -48,6 +48,7 @@ class Calculator {
             this.cur = "";
         }
         this.cur = this.cur.toString() + number.toString();
+
     }
 
 
@@ -186,9 +187,11 @@ class Calculator {
             this.preNum.innerText = "";
             this.curNum.innerText = "0";
         }
+        console.log(this.cur, " ", this.curNum.innerText);
         if (this.preNum.innerText.length > 3) {
             this.preNum.innerText = this.preNum.innerText.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
-        } else if (this.curNum.innerText.length > 3) {
+        }
+        if (this.curNum.innerText.length > 3) {
             this.curNum.innerText = this.curNum.innerText.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
         }
         if (this.curNum.innerText.length < 12) {
