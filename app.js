@@ -298,9 +298,8 @@ dataEqual.addEventListener("click", () => {
         calculator.compute();
         calculator.pre = calculator.cur;
     }
-    calculator.pre = parseFloat(calculator.pre);
     preNum.innerText = "";
-    curNum.innerText = calculator.pre;
+    curNum.innerText = parseFloat(calculator.pre);
     for (let i = 0; i < 4; i++) {
         opeButton[i].setAttribute("aria-pressed", "false");
     }
