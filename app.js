@@ -17,8 +17,13 @@ class Calculator {
         this.saveContinueOperator = "";
     }
 
-    addNum(number) {
+    addComma(str) {
+        let parts = str.split('.');
+        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        return parts.join('.');
+    }
 
+    addNum(number) {
         if (number === ".") {
             if (this.cur === "") {
                 this.cur = "0.";
@@ -46,7 +51,7 @@ class Calculator {
             this.cur = "";
         }
         this.cur = this.cur.toString() + number.toString();
-
+        this.upDate();
     }
 
 
@@ -75,7 +80,7 @@ class Calculator {
                 }
             } else if (this.saveOpe !== "" && this.savePre !== "" && this.saveOpe != undefined && this.savePre != undefined) {
                 this.compute();
-                this.pre = parseFloat(this.savePre);
+                this.pre = parseFloat(this.preNum.innerText);
                 this.saveContinueOperator = this.operator;
                 this.operator = this.saveOpe;
                 if (this.saveOpe === "-" && this.cur < 0) {
@@ -179,12 +184,21 @@ class Calculator {
             this.preNum.innerText = "";
             this.curNum.innerText = "0";
         }
-        if (this.preNum.innerText.length > 3) {
-            this.preNum.innerText = this.preNum.innerText.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
-        }
-        if (this.curNum.innerText.length > 3) {
-            this.curNum.innerText = this.curNum.innerText.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
-        }
+
+        this.preNum.innerText = this.addComma(this.preNum.innerText);
+        this.curNum.innerText = this.addComma(this.curNum.innerText);
+
+
+        let curWidth = curNum.scrollWidth;
+        let curParentWidth = curNum.parentElement.clientWidth;
+        let scalePercent = curParentWidth / curWidth;
+        let size = 40;
+        size *= scalePercent;
+        if (size > 30) size = 30;
+        curNum.style.fontSize = size + 'px';
+        console.log(size);
+
+
         if (this.curNum.innerText.length < 12) {
             curNum.style.fontSize = "4rem";
             return;
