@@ -118,9 +118,8 @@ class Calculator {
                 this.savePre = undefined;
                 console.log("herehere");
             } else if (preNum.innerText[preNum.innerText.length - 1] === "-" && (this.operator === "+") && this.cur < 0) {
-                this.pre = parseFloat(this.pre);
-                this.cur = parseFloat(this.cur);
                 this.pre = Number(this.pre) + Number(this.cur);
+                this.pre = parseFloat(this.pre);
                 this.cur = "";
                 this.operator = operator;
                 return;
@@ -176,6 +175,7 @@ class Calculator {
         }
         console.log(" this.cur ", this.cur, "this.operator", this.operator, " this.pre ", this.pre, "operator", operator);
         this.pre = this.cur;
+        this.pre = parseFloat(this.pre);
         this.cur = "";
         if (operator !== undefined) {
             this.operator = operator;
@@ -185,11 +185,7 @@ class Calculator {
 
     compute() {
         console.log(this.cur, this.saveContinue);
-        this.pre = parseFloat(this.pre);
-        this.cur = parseFloat(this.cur);
         this.cur = eval(this.pre + this.operator + this.cur);
-        console.log(this.cur, this.saveContinue);
-        console.log(calculator.saveContinueOperator, calculator.saveContinue);
         this.cur = parseFloat(this.cur);
         console.log(this.cur, this.pre, this.operator);
         console.log(calculator.saveContinueOperator, calculator.saveContinue);
@@ -367,6 +363,7 @@ dataEqual.addEventListener("click", () => {
     console.log(calculator.operator, preNum.innerText);
     if (calculator.savePre !== undefined && calculator.saveOpe !== undefined && calculator.savePre !== "" && calculator.saveOpe !== "") {
         calculator.operator = calculator.saveOpe;
+        calculator.pre = parseFloat(calculator.pre);
         calculator.cur = calculator.pre;
         calculator.pre = calculator.savePre;
         calculator.compute();
