@@ -21,56 +21,38 @@ class Calculator {
 
     addNum(number) {
 
-        console.log(this.pre, this.cur, this.operator === undefined);
-
         if (number === ".") {
-            console.log(this.pre, this.cur);
             if (this.cur === "") {
                 this.cur = "0.";
-                console.log("aa");
             } else if (this.cur === "-" || this.cur === "-0") {
                 this.cur = "-0.";
-                console.log("aa", this.cur);
-            } else if (this.cur.includes(".")) {
-                console.log("ojo");
+            } else if (this.cur.toString().includes(".")) {
                 return
             }
-            console.log(this.pre, this.cur);
         }
-        console.log(this.cur.includes("."));
         if (this.pre !== "" && curNum.innerText == "-0") {
-            console.log("aa");
             this.cur = - number.toString();
             return;
         } else if (this.cur == "-" || this.cur == "-0") {
             this.cur = - number.toString();
-            console.log("aa", this.cur, this.pre);
             return;
-        } else if (this.cur.includes(".") && number === ".") {
+        } else if (this.cur.toString().includes(".") && number === ".") {
             return
         }
 
-        console.log(this.pre, this.cur);
         if (this.pre === "" && this.cur !== "" && this.operator === "-") {
-
             this.cur = - this.cur;
-
             this.operator = "";
         } else if (this.pre === this.cur && this.operator === undefined) {
             this.pre = "";
             this.cur = "";
         }
-
         this.cur = this.cur.toString() + number.toString();
-        console.log("aa", this.cur, this.pre);
-
     }
 
 
 
     pressOperate(operator) {
-        console.log(this.pre, this.cur);
-        console.log(operator, operator === "-", "this.operator", this.operator, "operator ", operator);
 
         //after adding first operator
         if (this.cur === "" && this.operator === "" && operator === "-") {
@@ -83,40 +65,27 @@ class Calculator {
         //after adding second number
         if (this.pre !== "" && this.cur !== "" && this.operator !== "") {
 
-            console.log(this.cur, this.saveOpe, operator);
-            console.log(this.pre, this.operator, this.saveOpe, this.savePre, this.saveOpe != undefined && this.savePre != undefined);
-            console.log(" this.cur ", this.cur, "this.operator", this.operator, " this.pre ", this.pre, "operator", operator);
-            this.saveContinue = this.cur;
-            this.saveContinue = parseFloat(this.saveContinue);
+            this.saveContinue = parseFloat((this.cur));
             //aa+(bb*cc)
             if (operator === "*" || operator === "/") {
                 if (this.operator === "*" || this.operator === "/") {
                     this.compute();
                 } else if (this.operator === "-" || this.operator === "+") {
                     this.saveOpe = this.operator;
-                    this.savePre = this.pre;
-                    this.savePre = parseFloat(this.savePre);
+                    this.savePre = parseFloat((this.pre));
                 }
             } else if (this.saveOpe !== "" && this.savePre !== "" && this.saveOpe != undefined && this.savePre != undefined) {
-                console.log(" this.cur ", this.cur, "this.operator", this.operator);
-                console.log(" this.cur ", this.cur, "this.operator", this.operator);
-                console.log(this.pre, this.operator, this.saveOpe, this.saveContinue);
                 this.compute();
-                console.log(" this.cur ", this.cur, "this.operator", this.operator);
-                this.pre = this.savePre;
+                this.pre = parseFloat(this.savePre);
                 this.saveContinueOperator = this.operator;
                 this.operator = this.saveOpe;
                 if (this.saveOpe === "-" && this.cur < 0) {
-                    this.pre = parseFloat(this.pre);
-                    this.cur = parseFloat(this.cur);
-                    this.cur = Number(this.pre) + Math.abs(this.cur);
+                    this.cur = parseFloat(Number(this.pre) + Math.abs(this.cur));
                 } else {
                     this.compute();
                 }
-                console.log(this.cur);
                 this.saveOpe = undefined;
                 this.savePre = undefined;
-                console.log("herehere");
             } else if (preNum.innerText[preNum.innerText.length - 1] === "-" && (this.operator === "+") && this.cur < 0) {
                 this.pre = Number(this.pre) + Number(this.cur);
                 this.pre = parseFloat(this.pre);
@@ -124,15 +93,9 @@ class Calculator {
                 this.operator = operator;
                 return;
             } else {
-                console.log(" YA");
-                console.log(" this.cur ", this.cur, "this.operator", this.operator);
                 this.compute();
             }
-            console.log(" this.cur ", this.cur, "this.operator", this.operator);
-
-            console.log((this.saveOpe === "-" || this.saveOpe === "+"), (operator === "-" || operator === "+"), (this.operator === "*" || this.operator === "/"))
             if ((this.saveOpe === "-" || this.saveOpe === "+") && (operator === "-" || operator === "+") && (this.operator === "*" || this.operator === "/")) {
-                console.log("ys");
                 this.operator = this.saveOpe;
                 this.pre = this.savePre;
                 this.compute();
@@ -141,101 +104,80 @@ class Calculator {
             }
 
         }
-        console.log(this.operator, preNum.innerText.length, this.cur === "", preNum.innerText[preNum.innerText.length - 1]);
         if (this.pre !== "" && this.cur === "" && isNaN(preNum.innerText[preNum.innerText.length - 1])) {
             this.pre = this.pre;
             if (preNum.innerText[preNum.innerText.length - 1] === "-" && (operator === "-" || this.operator === "-")) {
                 this.operator = "+";
                 operator = "";
                 this.cur = "";
-                console.log("in");
             } else if (preNum.innerText[preNum.innerText.length - 1] !== undefined && preNum.innerText[preNum.innerText.length - 1] !== "-" && operator === "-") {
                 this.cur = "-";
                 operator = "";
-                console.log("in 2", this.operator, operator);
             } else {
-                console.log("in 4", this.operator, operator);
                 this.operator = operator;
-                console.log("in 3", this.operator, operator);
                 operator = "";
                 this.cur = "";
-                console.log("in 2", this.operator, operator);
             }
-            console.log("in change", this.operator, operator);
 
             return;
         }
-        console.log(this.operator);
         // adding negative number after second sign
         if (this.cur === "" && this.operator !== "" && operator === "-") {
-            console.log(" this.cur ", this.cur, "this.operator", this.operator, " this.pre ", this.pre, "operator", operator);
             this.cur = operator;
-            console.log(this.operator);
             return;
         }
-        console.log(" this.cur ", this.cur, "this.operator", this.operator, " this.pre ", this.pre, "operator", operator);
         this.pre = this.cur;
         this.pre = parseFloat(this.pre);
         this.cur = "";
         if (operator !== undefined) {
             this.operator = operator;
         }
-        console.log(" this.cur ", this.cur, "this.operator", this.operator, " this.pre ", this.pre, "operator", operator);
     }
 
     compute() {
-        console.log(this.cur, this.saveContinue);
-        this.cur = eval(this.pre + this.operator + this.cur);
-        this.cur = parseFloat(this.cur);
-        console.log(this.cur, this.pre, this.operator);
-        console.log(calculator.saveContinueOperator, calculator.saveContinue);
-
+        this.cur = parseFloat(eval(this.pre + this.operator + this.cur));
     }
 
     delete() {
         if (curNum.innerText !== "" && this.cur === "" && curNum.innerText !== "") {
-            this.pre = this.pre.toString().slice(0, -1);
+            if (curNum.innerText[curNum.innerText.length - 1] !== ",") {
+                this.pre = this.pre.toString().slice(0, -1);
+            }
             curNum.innerText = curNum.innerText.toString().slice(0, -1);
-            console.log(this.cur, curNum.innerText);
         } else if (curNum.innerText !== "") {
-            this.cur = this.cur.toString().slice(0, -1);
-            console.log(this.cur, curNum.innerText);
+            if (curNum.innerText[curNum.innerText.length - 1] !== ",") {
+                this.cur = this.cur.toString().slice(0, -1);
+            }
             curNum.innerText = curNum.innerText.toString().slice(0, -1);
-            console.log(this.cur, curNum.innerText, !isNaN(Number(curNum.innerText)), Number(curNum.innerText));
         }
 
         if (curNum.innerText === "") {
             this.clear();
         }
+        this.upDate();
     }
 
     toggle() {
-        console.log(this.cur);
         curNum.classList.toggle("negative");
-        console.log(this.cur);
         if (this.cur > 0) {
             this.cur = -this.cur;
         } else if (this.cur < 0) {
             this.cur = Math.abs(Number(this.cur));
         } else if (curNum.innerText === "0") {
-            console.log("dod");
             if (curNum.classList.length > 1) {
                 this.cur = "-0";
             } else {
                 this.cur = 0;
             }
         }
-        console.log(this.operator);
         if (preNum.innerText[preNum.innerText.length - 1] === "-" && this.operator === "-") {
             this.operator = "+";
             opeButton.values = "";
             preNum.innerText = this.pre + this.operator;
             this.cur = Math.abs(Number(this.cur));
-            console.log("in here ");
         } else if (preNum.innerText[preNum.innerText.length - 1] !== "-" && this.operator === "-") {
             this.cur = -this.cur;
         }
-        console.log(this.cur);
         curNum.innerText = this.cur;
     }
 
@@ -245,11 +187,9 @@ class Calculator {
             this.curNum.innerText = "0";
         }
         if (this.preNum.innerText.length > 3) {
-            this.preNum.innerText = this.preNum.innerText.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")
-            console.log("ioe");
+            this.preNum.innerText = this.preNum.innerText.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
         } else if (this.curNum.innerText.length > 3) {
-            this.curNum.innerText = this.curNum.innerText.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")
-            console.log("joe");
+            this.curNum.innerText = this.curNum.innerText.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
         }
         if (this.curNum.innerText.length < 12) {
             curNum.style.fontSize = "4rem";
@@ -281,10 +221,8 @@ const calculator = new Calculator(preNum, curNum);
 
 numButton.forEach(num => {
     num.addEventListener("click", () => {
-        console.log(" curNum.innerText ", curNum.innerText, "num.innerText", num.innerText);
         calculator.addNum(num.value);
         curNum.innerText = calculator.cur;
-        console.log(" curNum.innerText ", curNum.innerText, "num.innerText", num.innerText);
         dataEqual.setAttribute("aria-pressed", "false");
         for (let i = 0; i < 4; i++) {
             opeButton[i].setAttribute("aria-pressed", "false");
@@ -308,21 +246,16 @@ opeButton.forEach(ope => {
             calculator.operator = "";
         }
         calculator.pressOperate(ope.value);
-        console.log("calculator.savePre ", calculator.savePre, "calculator.saveOpe ", calculator.saveOpe, "calculator.pre ", calculator.pre);
         if (calculator.pre === "") {
             //show the minus sign
             curNum.innerText = calculator.cur;
-            console.log("b");
         } else if (calculator.pre !== "" && calculator.savePre !== undefined && calculator.saveOpe !== undefined && calculator.savePre !== "" && calculator.saveOpe !== "") {
             preNum.innerText = calculator.savePre + calculator.saveOpe + calculator.pre + calculator.operator;
             curNum.innerText = "";
-            console.log("a");
         } else {
             preNum.innerText = calculator.pre + calculator.operator;
             curNum.innerText = calculator.cur;
-            console.log("c");
         }
-        console.log("calculator.savePre ", calculator.savePre, "calculator.saveOpe ", calculator.saveOpe, "calculator.operator ", calculator.operator);
         for (let j = 0; j < 11; j++) {
             numButton[j].setAttribute("aria-pressed", "false");
         }
@@ -338,7 +271,6 @@ opeButton.forEach(ope => {
 })
 
 dataEqual.addEventListener("click", () => {
-    console.log(calculator.pre, calculator.result, calculator.saveContinueOperator, calculator.operator, calculator.saveContinue);
     if (preNum.innerText === "" && curNum.innerText !== "" && calculator.operator !== "" && calculator.saveContinue !== "") {
         if (calculator.pre !== "") {
             calculator.result = calculator.pre;
@@ -350,7 +282,6 @@ dataEqual.addEventListener("click", () => {
         calculator.result = parseFloat(calculator.result);
         curNum.innerText = calculator.result;
         calculator.pre = "";
-        console.log("test");
         calculator.cur = calculator.result;
         calculator.upDate();
         return;
@@ -359,21 +290,17 @@ dataEqual.addEventListener("click", () => {
     }
 
     calculator.pressOperate();
-    console.log(calculator.operator, calculator.pre, calculator.cur);
-    console.log(calculator.operator, preNum.innerText);
     if (calculator.savePre !== undefined && calculator.saveOpe !== undefined && calculator.savePre !== "" && calculator.saveOpe !== "") {
         calculator.operator = calculator.saveOpe;
         calculator.pre = parseFloat(calculator.pre);
         calculator.cur = calculator.pre;
         calculator.pre = calculator.savePre;
         calculator.compute();
-        console.log("b");
         calculator.pre = calculator.cur;
     }
     calculator.pre = parseFloat(calculator.pre);
     preNum.innerText = "";
     curNum.innerText = calculator.pre;
-    console.log("c", calculator.pre, calculator.cur, preNum.innerText, curNum.innerText);
     for (let i = 0; i < 4; i++) {
         opeButton[i].setAttribute("aria-pressed", "false");
     }
@@ -381,12 +308,7 @@ dataEqual.addEventListener("click", () => {
         numButton[j].setAttribute("aria-pressed", "false");
     }
     dataEqual.setAttribute("aria-pressed", "true");
-
-    console.log("c", calculator.pre, preNum.innerText, curNum.innerText);
-    console.log("update", calculator.pre, calculator.cur, calculator.pre, calculator.operator);
     calculator.upDate();
-    console.log(calculator.cur, calculator.result, calculator.saveContinueOperator, calculator.operator, calculator.saveContinue);
-    console.log(!isNaN(curNum.innerText), curNum.innerText);
 })
 
 clear.addEventListener("click", () => {
@@ -432,7 +354,6 @@ window.addEventListener('keypress', (e) => {
     let keyBoardWord = String.fromCharCode(e.which);
 
     if (e.which == 61) {
-        console.log(calculator.pre, calculator.result, calculator.saveContinueOperator, calculator.operator, calculator.saveContinue);
         if (preNum.innerText === "" && curNum.innerText !== "" && calculator.operator !== "" && calculator.saveContinue !== "") {
             if (calculator.pre !== "") {
                 calculator.result = calculator.pre;
@@ -444,7 +365,6 @@ window.addEventListener('keypress', (e) => {
             calculator.result = eval(calculator.result + calculator.saveContinueOperator + calculator.saveContinue);
             curNum.innerText = calculator.result;
             calculator.pre = "";
-            console.log("test");
             calculator.cur = calculator.result;
             calculator.upDate();
             return;
@@ -453,14 +373,11 @@ window.addEventListener('keypress', (e) => {
         }
 
         calculator.pressOperate();
-        console.log(calculator.operator, calculator.pre, calculator.cur);
-        console.log(calculator.operator, preNum.innerText);
         if (calculator.savePre !== undefined && calculator.saveOpe !== undefined && calculator.savePre !== "" && calculator.saveOpe !== "") {
             calculator.operator = calculator.saveOpe;
             calculator.cur = calculator.pre;
             calculator.pre = calculator.savePre;
             calculator.compute();
-            console.log("b");
             calculator.pre = calculator.cur;
         }
         preNum.innerText = "";
@@ -505,19 +422,15 @@ window.addEventListener('keypress', (e) => {
             calculator.operator = "";
         }
         calculator.pressOperate(keyBoardWord);
-        console.log("calculator.savePre ", calculator.savePre, "calculator.saveOpe ", calculator.saveOpe, "calculator.pre ", calculator.pre);
         if (calculator.pre === "") {
             //show the minus sign
             curNum.innerText = calculator.cur;
-            console.log("b");
         } else if (calculator.pre !== "" && calculator.savePre !== undefined && calculator.saveOpe !== undefined && calculator.savePre !== "" && calculator.saveOpe !== "") {
             preNum.innerText = calculator.savePre + calculator.saveOpe + calculator.pre + calculator.operator;
             curNum.innerText = "";
-            console.log("a");
         } else {
             preNum.innerText = calculator.pre + calculator.operator;
             curNum.innerText = calculator.cur;
-            console.log("c");
         }
         for (let j = 0; j < 11; j++) {
             numButton[j].setAttribute("aria-pressed", "false");
