@@ -144,14 +144,11 @@ class Calculator {
 
     delete() {
         if (curNum.innerText !== "" && this.cur === "" && curNum.innerText !== "") {
-            if (curNum.innerText[curNum.innerText.length - 1] !== ",") {
-                this.pre = this.pre.toString().slice(0, -1);
-            }
+            this.pre = this.pre.toString().slice(0, -1);
             curNum.innerText = curNum.innerText.toString().slice(0, -1);
         } else if (curNum.innerText !== "") {
-            if (curNum.innerText[curNum.innerText.length - 1] !== ",") {
-                this.cur = this.cur.toString().slice(0, -1);
-            }
+
+            this.cur = this.cur.toString().slice(0, -1);
             curNum.innerText = curNum.innerText.toString().slice(0, -1);
         }
     }
@@ -187,7 +184,6 @@ class Calculator {
 
         this.preNum.innerText = this.addComma(this.preNum.innerText);
         this.curNum.innerText = this.addComma(this.curNum.innerText);
-
 
         let curWidth = curNum.scrollWidth;
         let curParentWidth = curNum.parentElement.clientWidth;
