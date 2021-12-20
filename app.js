@@ -186,7 +186,7 @@ class Calculator {
         this.curNum.innerText = this.addComma(this.curNum.innerText);
 
         let curWidth = curNum.scrollWidth;
-        let curParentWidth = curNum.parentElement.clientWidth;
+        let curParentWidth = curNum.parentElement.clientWidth - 20;
         let scalePercent = curParentWidth / curWidth;
         let size = 40;
         size *= scalePercent;
