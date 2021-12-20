@@ -144,11 +144,14 @@ class Calculator {
 
     delete() {
         if (curNum.innerText !== "" && this.cur === "" && curNum.innerText !== "") {
-            this.pre = this.pre.toString().slice(0, -1);
+            if (curNum.innerText[curNum.innerText.length - 1] !== ",") {
+                this.pre = this.pre.toString().slice(0, -1);
+            }
             curNum.innerText = curNum.innerText.toString().slice(0, -1);
         } else if (curNum.innerText !== "") {
-
-            this.cur = this.cur.toString().slice(0, -1);
+            if (curNum.innerText[curNum.innerText.length - 1] !== ",") {
+                this.cur = this.cur.toString().slice(0, -1);
+            }
             curNum.innerText = curNum.innerText.toString().slice(0, -1);
         }
     }
