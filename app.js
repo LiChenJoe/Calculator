@@ -139,19 +139,17 @@ class Calculator {
 
     delete() {
         if (curNum.innerText !== "" && this.cur === "" && curNum.innerText !== "") {
-            this.pre = this.pre.toString().slice(0, -1);
+            if (curNum.innerText[curNum.innerText.length - 1] !== ",") {
+                this.pre = this.pre.toString().slice(0, -1);
+            }
             curNum.innerText = curNum.innerText.toString().slice(0, -1);
         } else if (curNum.innerText !== "") {
-            this.cur = this.cur.toString().slice(0, -1);
+            if (curNum.innerText[curNum.innerText.length - 1] !== ",") {
+                this.cur = this.cur.toString().slice(0, -1);
+            }
             curNum.innerText = curNum.innerText.toString().slice(0, -1);
         }
-
-        if (curNum.innerText === "") {
-            this.clear();
-        }
-        this.upDate();
     }
-
     toggle() {
         curNum.classList.toggle("negative");
         if (this.cur > 0) {
@@ -181,7 +179,12 @@ class Calculator {
             this.preNum.innerText = "";
             this.curNum.innerText = "0";
         }
-        console.log(this.cur, " ", this.curNum.innerText);
+        if (this.preNum.innerText.length > 3) {
+            this.preNum.innerText = this.preNum.innerText.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+        }
+        if (this.curNum.innerText.length > 3) {
+            this.curNum.innerText = this.curNum.innerText.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+        }
         if (this.curNum.innerText.length < 12) {
             curNum.style.fontSize = "4rem";
             return;
