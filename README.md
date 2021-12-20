@@ -8,4 +8,4 @@ It works perfectly like any other calculator, you can control it through the key
 ✅  Repeat the calculation by clicking on equal button.  
 ✅  Switch between positive and negative number.  
 ✅  Display the ongoing button.  
-✅  Thousands separator.  
+✅  Support backspace delete.
