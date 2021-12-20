@@ -87,6 +87,7 @@ class Calculator {
             console.log(this.pre, this.operator, this.saveOpe, this.savePre, this.saveOpe != undefined && this.savePre != undefined);
             console.log(" this.cur ", this.cur, "this.operator", this.operator, " this.pre ", this.pre, "operator", operator);
             this.saveContinue = this.cur;
+            this.saveContinue = parseFloat(this.saveContinue);
             //aa+(bb*cc)
             if (operator === "*" || operator === "/") {
                 if (this.operator === "*" || this.operator === "/") {
@@ -349,8 +350,8 @@ dataEqual.addEventListener("click", () => {
         if (calculator.saveContinueOperator === "") {
             calculator.saveContinueOperator = calculator.operator;
         }
-        calculator.result = parseFloat(calculator.result);
         calculator.result = eval(calculator.result + calculator.saveContinueOperator + calculator.saveContinue);
+        calculator.result = parseFloat(calculator.result);
         curNum.innerText = calculator.result;
         calculator.pre = "";
         console.log("test");
@@ -372,9 +373,7 @@ dataEqual.addEventListener("click", () => {
         console.log("b");
         calculator.pre = calculator.cur;
     }
-    preNum.innerText = "";
-    curNum.innerText = calculator.pre;
-    console.log("calculator.savePre ", calculator.savePre, "calculator.saveOpe ", calculator.saveOpe, "calculator.pre ", calculator.pre, calculator.operator);
+    calculator.pre = parseFloat(calculator.pre);
     preNum.innerText = "";
     curNum.innerText = calculator.pre;
     console.log("c", calculator.pre, calculator.cur, preNum.innerText, curNum.innerText);
