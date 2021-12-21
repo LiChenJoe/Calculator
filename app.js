@@ -1,4 +1,3 @@
-console.log(parseFloat((3.6 * 3.6 * 3.6).toPrecision(12)));
 class Calculator {
     constructor(preNum, curNum) {
         this.preNum = preNum;
