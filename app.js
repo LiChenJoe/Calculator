@@ -16,7 +16,15 @@ class Calculator {
         this.saveContinue = "";
         this.saveContinueOperator = "";
     }
-
+    addComma(str) {
+        let parts = str.split('.');
+        if (parts.includes(".")) {
+            parts[0] = parts[0].replace(/\d(?=(?:\d{3})+\b\.)/g, ',');
+        } else {
+            parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        }
+        return parts.join('.');
+    }
     addNum(number) {
 
         if (number === ".") {
@@ -175,7 +183,6 @@ class Calculator {
     }
 
     upDate() {
-
         let curWidth = curNum.scrollWidth;
         let curParentWidth = curNum.parentElement.clientWidth - 20;
         let scalePercent = curParentWidth / curWidth;
@@ -265,7 +272,9 @@ opeButton.forEach(ope => {
             }
         }
     })
-    calculator.upDate()
+    calculator.upDate();
+    preNum.innerText = calculator.addComma(preNum.innerText);
+    curNum.innerText = calculator.addComma(curNum.innerText);
 })
 
 dataEqual.addEventListener("click", () => {
@@ -282,6 +291,8 @@ dataEqual.addEventListener("click", () => {
         calculator.pre = "";
         calculator.cur = calculator.result;
         calculator.upDate();
+        preNum.innerText = calculator.addComma(preNum.innerText);
+        curNum.innerText = calculator.addComma(curNum.innerText);
         return;
     } else if (preNum.innerText === "" && curNum.innerText !== "" && calculator.operator === "" && calculator.saveContinue === "") {
         return;
@@ -306,6 +317,8 @@ dataEqual.addEventListener("click", () => {
     }
     dataEqual.setAttribute("aria-pressed", "true");
     calculator.upDate();
+    preNum.innerText = calculator.addComma(preNum.innerText);
+    curNum.innerText = calculator.addComma(curNum.innerText);
 })
 
 clear.addEventListener("click", () => {
@@ -363,6 +376,8 @@ window.addEventListener('keypress', (e) => {
             calculator.pre = "";
             calculator.cur = calculator.result;
             calculator.upDate();
+            preNum.innerText = calculator.addComma(preNum.innerText);
+            curNum.innerText = calculator.addComma(curNum.innerText);
             return;
         } else if (preNum.innerText === "" && curNum.innerText !== "" && calculator.operator === "" && calculator.saveContinue === "") {
             return;
@@ -386,6 +401,8 @@ window.addEventListener('keypress', (e) => {
         }
         dataEqual.setAttribute("aria-pressed", "true");
         calculator.upDate();
+        preNum.innerText = calculator.addComma(preNum.innerText);
+        curNum.innerText = calculator.addComma(curNum.innerText);
     } else if (keyBoardWord > -1 && keyBoardWord < 11 && keyBoardWord != "\r") {
         calculator.addNum(keyBoardWord);
         curNum.innerText = calculator.cur;
@@ -401,6 +418,8 @@ window.addEventListener('keypress', (e) => {
             }
         }
         calculator.upDate();
+        preNum.innerText = calculator.addComma(preNum.innerText);
+        curNum.innerText = calculator.addComma(curNum.innerText);
     }
     else if (keyBoardWord == '.') {
         calculator.addNum(keyBoardWord);
@@ -438,6 +457,8 @@ window.addEventListener('keypress', (e) => {
                 opeButton[i].setAttribute("aria-pressed", "true");
             }
         }
+        preNum.innerText = calculator.addComma(preNum.innerText);
+        curNum.innerText = calculator.addComma(curNum.innerText);
     }
 })
 
