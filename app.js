@@ -24,6 +24,7 @@ class Calculator {
     }
 
     addNum(number) {
+
         if (number === ".") {
             if (this.cur === "") {
                 this.cur = "0.";
@@ -51,7 +52,7 @@ class Calculator {
             this.cur = "";
         }
         this.cur = this.cur.toString() + number.toString();
-        this.upDate();
+
     }
 
 
@@ -80,7 +81,7 @@ class Calculator {
                 }
             } else if (this.saveOpe !== "" && this.savePre !== "" && this.saveOpe != undefined && this.savePre != undefined) {
                 this.compute();
-                this.pre = parseFloat(this.preNum.innerText);
+                this.pre = parseFloat(this.savePre);
                 this.saveContinueOperator = this.operator;
                 this.operator = this.saveOpe;
                 if (this.saveOpe === "-" && this.cur < 0) {
@@ -180,10 +181,7 @@ class Calculator {
     }
 
     upDate() {
-        if (this.pre == "" && this.cur == "" && this.operator == "") {
-            this.preNum.innerText = "";
-            this.curNum.innerText = "0";
-        }
+
 
         this.preNum.innerText = this.addComma(this.preNum.innerText);
         this.curNum.innerText = this.addComma(this.curNum.innerText);
@@ -197,7 +195,10 @@ class Calculator {
         curNum.style.fontSize = size + 'px';
         console.log(size);
 
-
+        if (this.pre == "" && this.cur == "" && this.operator == "") {
+            this.preNum.innerText = "";
+            this.curNum.innerText = "0";
+        }
         if (this.curNum.innerText.length < 12) {
             curNum.style.fontSize = "4rem";
             return;
