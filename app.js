@@ -1,3 +1,4 @@
+console.log(parseFloat((3.6 * 3.6 * 3.6).toPrecision(12)));
 class Calculator {
     constructor(preNum, curNum) {
         this.preNum = preNum;
@@ -19,7 +20,11 @@ class Calculator {
 
     addComma(str) {
         let parts = str.split('.');
-        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        if (parts.includes(".")) {
+            parts[0] = parts[0].replace(/\d(?=(?:\d{3})+\b\.)/g, ',');
+        } else {
+            parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        }
         return parts.join('.');
     }
 
@@ -132,7 +137,7 @@ class Calculator {
     }
 
     compute() {
-        this.cur = parseFloat(eval(parseFloat(this.pre) + this.operator + parseFloat(this.cur)));
+        this.cur = parseFloat(eval(this.pre + this.operator + this.cur).toPrecision(12));
     }
 
     delete() {
@@ -277,7 +282,7 @@ dataEqual.addEventListener("click", () => {
         if (calculator.saveContinueOperator === "") {
             calculator.saveContinueOperator = calculator.operator;
         }
-        calculator.result = parseFloat(eval(parseFloat(calculator.result) + calculator.saveContinueOperator + parseFloat(calculator.saveContinue)));
+        calculator.result = parseFloat(eval(calculator.result + calculator.saveContinueOperator + calculator.saveContinue).toPrecision(12));
         calculator.cur = calculator.result;
         curNum.innerText = calculator.cur;
         calculator.pre = "";
@@ -295,6 +300,7 @@ dataEqual.addEventListener("click", () => {
         calculator.compute();
         calculator.pre = calculator.cur;
     }
+    curNum.innerText = calculator.cur;
     preNum.innerText = "";
     for (let i = 0; i < 4; i++) {
         opeButton[i].setAttribute("aria-pressed", "false");
@@ -356,7 +362,7 @@ window.addEventListener('keypress', (e) => {
             if (calculator.saveContinueOperator === "") {
                 calculator.saveContinueOperator = calculator.operator;
             }
-            calculator.result = parseFloat(eval(parseFloat(calculator.result) + calculator.saveContinueOperator + parseFloat(calculator.saveContinue)));
+            calculator.result = parseFloat(eval(calculator.result + calculator.saveContinueOperator + calculator.saveContinue).toPrecision(12));
             calculator.cur = calculator.result;
             curNum.innerText = calculator.cur;
             calculator.pre = "";
