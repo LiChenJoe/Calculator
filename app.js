@@ -57,7 +57,6 @@ class Calculator {
 
 
     pressOperate(operator) {
-        console.log(this.pre, this.cur);
         //after adding first operator
         if (this.cur === "" && this.operator === "" && operator === "-") {
             this.cur = "-" + "0";
