@@ -24,7 +24,6 @@ class Calculator {
     }
 
     addNum(number) {
-
         if (number === ".") {
             if (this.cur === "") {
                 this.cur = "0.";
@@ -52,40 +51,36 @@ class Calculator {
             this.cur = "";
         }
         this.cur = this.cur.toString() + number.toString();
-
+        this.upDate();
     }
 
 
 
     pressOperate(operator) {
-
+        console.log(this.pre, this.cur);
         //after adding first operator
         if (this.cur === "" && this.operator === "" && operator === "-") {
             this.cur = "-" + "0";
             return;
-        } else if (this.cur !== "") {
-            this.cur = parseFloat(this.cur);
         }
-
         //after adding second number
         if (this.pre !== "" && this.cur !== "" && this.operator !== "") {
 
-            this.saveContinue = parseFloat((this.cur));
+            this.saveContinue = (this.cur);
             //aa+(bb*cc)
             if (operator === "*" || operator === "/") {
                 if (this.operator === "*" || this.operator === "/") {
                     this.compute();
                 } else if (this.operator === "-" || this.operator === "+") {
                     this.saveOpe = this.operator;
-                    this.savePre = parseFloat((this.pre));
+                    this.savePre = (this.pre);
                 }
             } else if (this.saveOpe !== "" && this.savePre !== "" && this.saveOpe != undefined && this.savePre != undefined) {
                 this.compute();
-                this.pre = parseFloat(this.savePre);
                 this.saveContinueOperator = this.operator;
                 this.operator = this.saveOpe;
                 if (this.saveOpe === "-" && this.cur < 0) {
-                    this.cur = parseFloat(Number(this.pre) + Math.abs(this.cur));
+                    this.cur = Number(this.pre) + Math.abs(this.cur);
                 } else {
                     this.compute();
                 }
@@ -93,7 +88,6 @@ class Calculator {
                 this.savePre = undefined;
             } else if (preNum.innerText[preNum.innerText.length - 1] === "-" && (this.operator === "+") && this.cur < 0) {
                 this.pre = Number(this.pre) + Number(this.cur);
-                this.pre = parseFloat(this.pre);
                 this.cur = "";
                 this.operator = operator;
                 return;
@@ -132,7 +126,6 @@ class Calculator {
             return;
         }
         this.pre = this.cur;
-        this.pre = parseFloat(this.pre);
         this.cur = "";
         if (operator !== undefined) {
             this.operator = operator;
@@ -140,7 +133,7 @@ class Calculator {
     }
 
     compute() {
-        this.cur = parseFloat(eval(this.pre + this.operator + this.cur));
+        this.cur = parseFloat(eval(parseFloat(this.pre) + this.operator + parseFloat(this.cur)));
     }
 
     delete() {
@@ -181,7 +174,10 @@ class Calculator {
     }
 
     upDate() {
-
+        if (this.pre == "" && this.cur == "" && this.operator == "") {
+            this.preNum.innerText = "";
+            this.curNum.innerText = "0";
+        }
 
         this.preNum.innerText = this.addComma(this.preNum.innerText);
         this.curNum.innerText = this.addComma(this.curNum.innerText);
@@ -193,12 +189,8 @@ class Calculator {
         size *= scalePercent;
         if (size > 30) size = 30;
         curNum.style.fontSize = size + 'px';
-        console.log(size);
 
-        if (this.pre == "" && this.cur == "" && this.operator == "") {
-            this.preNum.innerText = "";
-            this.curNum.innerText = "0";
-        }
+
         if (this.curNum.innerText.length < 12) {
             curNum.style.fontSize = "4rem";
             return;
@@ -286,11 +278,10 @@ dataEqual.addEventListener("click", () => {
         if (calculator.saveContinueOperator === "") {
             calculator.saveContinueOperator = calculator.operator;
         }
-        calculator.result = eval(calculator.result + calculator.saveContinueOperator + calculator.saveContinue);
-        calculator.result = parseFloat(calculator.result);
-        curNum.innerText = calculator.result;
-        calculator.pre = "";
+        calculator.result = parseFloat(eval(parseFloat(calculator.result) + calculator.saveContinueOperator + parseFloat(calculator.saveContinue)));
         calculator.cur = calculator.result;
+        curNum.innerText = calculator.cur;
+        calculator.pre = "";
         calculator.upDate();
         return;
     } else if (preNum.innerText === "" && curNum.innerText !== "" && calculator.operator === "" && calculator.saveContinue === "") {
@@ -300,14 +291,12 @@ dataEqual.addEventListener("click", () => {
     calculator.pressOperate();
     if (calculator.savePre !== undefined && calculator.saveOpe !== undefined && calculator.savePre !== "" && calculator.saveOpe !== "") {
         calculator.operator = calculator.saveOpe;
-        calculator.pre = parseFloat(calculator.pre);
         calculator.cur = calculator.pre;
         calculator.pre = calculator.savePre;
         calculator.compute();
         calculator.pre = calculator.cur;
     }
     preNum.innerText = "";
-    curNum.innerText = parseFloat(calculator.pre);
     for (let i = 0; i < 4; i++) {
         opeButton[i].setAttribute("aria-pressed", "false");
     }
@@ -368,11 +357,10 @@ window.addEventListener('keypress', (e) => {
             if (calculator.saveContinueOperator === "") {
                 calculator.saveContinueOperator = calculator.operator;
             }
-            calculator.result = parseFloat(calculator.result);
-            calculator.result = eval(calculator.result + calculator.saveContinueOperator + calculator.saveContinue);
-            curNum.innerText = calculator.result;
-            calculator.pre = "";
+            calculator.result = parseFloat(eval(parseFloat(calculator.result) + calculator.saveContinueOperator + parseFloat(calculator.saveContinue)));
             calculator.cur = calculator.result;
+            curNum.innerText = calculator.cur;
+            calculator.pre = "";
             calculator.upDate();
             return;
         } else if (preNum.innerText === "" && curNum.innerText !== "" && calculator.operator === "" && calculator.saveContinue === "") {
