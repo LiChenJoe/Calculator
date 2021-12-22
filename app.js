@@ -16,6 +16,7 @@ class Calculator {
         this.saveContinue = "";
         this.saveContinueOperator = "";
     }
+
     addComma(str) {
         let parts = str.split('.');
         if (parts.includes(".")) {
@@ -190,7 +191,6 @@ class Calculator {
         size *= scalePercent;
         if (size > 30) size = 30;
         curNum.style.fontSize = size + 'px';
-        console.log(size);
 
         if (this.pre == "" && this.cur == "" && this.operator == "") {
             this.preNum.innerText = "";
@@ -240,6 +240,8 @@ numButton.forEach(num => {
             }
         }
         calculator.upDate();
+        preNum.innerText = calculator.addComma(preNum.innerText);
+        curNum.innerText = calculator.addComma(curNum.innerText);
     })
 })
 
