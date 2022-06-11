@@ -72,7 +72,7 @@ class Calculator {
             this.cur = parseFloat(this.cur);
         }this.saveContinue
 
-        //after adding second number
+        //after adding second number 
         if (this.pre !== "" && this.cur !== "" && this.operator !== "") {
 
             this.saveContinue = parseFloat((this.cur));
