@@ -70,7 +70,7 @@ class Calculator {
             return ;
         }else if (this.cur !== "") {
             this.cur = parseFloat(this.cur);
-        }
+        }this.saveContinue
 
         //after adding second number
         if (this.pre !== "" && this.cur !== "" && this.operator !== "") {
