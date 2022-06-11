@@ -26,6 +26,7 @@ class Calculator {
         }
         return parts.join('.');
     }
+    
     addNum(number) {
 
         if (number === ".") {
@@ -53,6 +54,10 @@ class Calculator {
         } else if (this.pre === this.cur && this.operator === undefined) {
             this.pre = "";
             this.cur = "";
+        } else if (this.pre ==="" && this.cur ==="0" &&(this.operator === "*" ||this.operator === "/" )){
+            this.pre = "";
+            this.cur = number;
+            return; 
         }
         this.cur = this.cur.toString() + number.toString();
 
@@ -61,18 +66,24 @@ class Calculator {
 
 
     pressOperate(operator) {
+        if (calculator.operator === undefined) {
+            calculator.operator = "";
+        }
         //after adding first operator
-        if (this.cur === "" && this.operator === "" && operator === "-") {
+        if ((this.cur === "" || this.cur === "0" ) && this.operator === "" && operator === "-") {
             this.cur = "-" + "0";
             return;
-        } else if(this.cur === "" && this.operator === "" &&this.pre !== ""){
-            this.operator = operator; 
-            return ;
-        }else if (this.cur !== "") {
+        } else if ((this.cur === "" || this.cur === "0" ) && this.operator === "" && (operator === "*" ||operator === "/" )){
+            this.cur = "0";
+            this.operator = operator;
+            return;
+        } else if ((this.cur === "" || this.cur === "0" ) && this.operator === "" && operator === "+"){
+            this.cur = "0";
+        } else if (this.cur !== "") {
             this.cur = parseFloat(this.cur);
-        }this.saveContinue
+        } 
 
-        //after adding second number 
+        //after adding second number
         if (this.pre !== "" && this.cur !== "" && this.operator !== "") {
 
             this.saveContinue = parseFloat((this.cur));
@@ -115,7 +126,6 @@ class Calculator {
 
         }
         if (this.pre !== "" && this.cur === "" && isNaN(preNum.innerText[preNum.innerText.length - 1])) {
-            console.log("hello");
             this.pre = this.pre;
             if (preNum.innerText[preNum.innerText.length - 1] === "-" && (operator === "-" || this.operator === "-")) {
                 this.operator = "+";
@@ -145,6 +155,19 @@ class Calculator {
         }
     }
 
+    opeButtonDisplay(){
+        if (calculator.pre === "") {
+            //show the minus sign
+            curNum.innerText = calculator.cur;
+        } else if (calculator.pre !== "" && calculator.savePre !== undefined && calculator.saveOpe !== undefined && calculator.savePre !== "" && calculator.saveOpe !== "") {
+            preNum.innerText = calculator.savePre + calculator.saveOpe + calculator.pre + calculator.operator;
+            curNum.innerText = "";
+        } else {
+            preNum.innerText = calculator.pre + calculator.operator;
+            curNum.innerText = calculator.cur;
+        }
+    }
+
     compute() {
         this.cur = parseFloat(eval(this.pre + this.operator + this.cur).toPrecision(12));
     }
@@ -169,8 +192,7 @@ class Calculator {
         } else if (preNum.innerText === "" && curNum.innerText !== "" && calculator.operator === "" && calculator.saveContinue === "") {
             return;
         }
-    
-        calculator.pressOperate();
+        calculator.pressOperate(this.operator);
         if (calculator.savePre !== undefined && calculator.saveOpe !== undefined && calculator.savePre !== "" && calculator.saveOpe !== "") {
             calculator.operator = calculator.saveOpe;
             calculator.pre = parseFloat(calculator.pre);
@@ -181,13 +203,6 @@ class Calculator {
         }
         preNum.innerText = "";
         curNum.innerText = parseFloat(calculator.pre);
-        for (let i = 0; i < 4; i++) {
-            opeButton[i].setAttribute("aria-pressed", "false");
-        }
-        for (let j = 0; j < 11; j++) {
-            numButton[j].setAttribute("aria-pressed", "false");
-        }
-        dataEqual.setAttribute("aria-pressed", "true");
         calculator.upDate();
         preNum.innerText = calculator.addComma(preNum.innerText);
         curNum.innerText = calculator.addComma(curNum.innerText);
@@ -195,12 +210,10 @@ class Calculator {
 
     delete() {
         if (curNum.innerText.includes(",")){
-            console.log("ff");
             curNum.innerText= curNum.innerText.replaceAll(",", "");
         } else if (curNum.innerText ==="" && this.operator=== ""&& preNum.innerText.includes(",")){
             preNum.innerText= preNum.innerText.replaceAll(",", "");
         }
-        console.log(this.operator);
         if (curNum.innerText !== "") {
             if (curNum.innerText[curNum.innerText.length - 1] !== ",") {
                 this.cur = this.cur.toString().slice(0, -1);
@@ -211,19 +224,28 @@ class Calculator {
                 this.operator="";
             }
             preNum.innerText = preNum.innerText.slice(0, -1);
+            if (preNum.innerText.toString().slice(-1) ==="." ){
+                preNum.innerText = preNum.innerText.slice(0, -1);
+                console.log("s");
+            }
         } 
         curNum.innerText = calculator.addComma(curNum.innerText);
         preNum.innerText = calculator.addComma(preNum.innerText);
-        console.log("this.cur", this.cur, "this.pre", this.pre)
         calculator.upDate();
     }
+
     toggle() {
         curNum.classList.toggle("negative");
+        if (this.cur === "" && (this.pre !== "")){
+            this.operate = "";
+            this.cur = this.pre;
+            this.pre="";
+        }
         if (this.cur > 0) {
             this.cur = -this.cur;
         } else if (this.cur < 0) {
             this.cur = Math.abs(Number(this.cur));
-        } else if (curNum.innerText === "0") {
+        } else if (curNum.innerText === "0"|| curNum.innerText === "-0") {
             if (curNum.classList.length > 1) {
                 this.cur = "-0";
             } else {
@@ -239,6 +261,8 @@ class Calculator {
             this.cur = -this.cur;
         }
         curNum.innerText = this.cur;
+        curNum.innerText = calculator.addComma(curNum.innerText);
+        
     }
 
     upDate() {
@@ -307,39 +331,33 @@ window.addEventListener("load", calculator.upDate());
 
 opeButton.forEach(ope => {
     ope.addEventListener("click", () => {
-        if (calculator.operator === undefined) {
-            calculator.operator = "";
-        }
-        calculator.pressOperate(ope.value);
-        if (calculator.pre === "") {
-            //show the minus sign
-            curNum.innerText = calculator.cur;
-        } else if (calculator.pre !== "" && calculator.savePre !== undefined && calculator.saveOpe !== undefined && calculator.savePre !== "" && calculator.saveOpe !== "") {
-            preNum.innerText = calculator.savePre + calculator.saveOpe + calculator.pre + calculator.operator;
-            curNum.innerText = "";
-        } else {
-            preNum.innerText = calculator.pre + calculator.operator;
-            curNum.innerText = calculator.cur;
-        }
+            calculator.pressOperate(ope.value);
+            calculator.opeButtonDisplay();
         for (let j = 0; j < 11; j++) {
             numButton[j].setAttribute("aria-pressed", "false");
         }
-        dataEqual.setAttribute("aria-pressed", "false");
         for (let i = 0; i < 4; i++) {
             opeButton[i].setAttribute("aria-pressed", "false");
             if (opeButton[i].value === ope.value) {
                 opeButton[i].setAttribute("aria-pressed", "true");
             }
         }
+        dataEqual.setAttribute("aria-pressed", "false");
     })
     calculator.upDate();
     preNum.innerText = calculator.addComma(preNum.innerText);
     curNum.innerText = calculator.addComma(curNum.innerText);
 })
 
-//螢幕等於按鍵
 dataEqual.addEventListener("click", () => {
+    dataEqual.setAttribute("aria-pressed", "true");
     calculator.equalTo();
+    for (let i = 0; i < 4; i++) {
+        opeButton[i].setAttribute("aria-pressed", "false");
+    }
+    for (let j = 0; j < 11; j++) {
+        numButton[j].setAttribute("aria-pressed", "false");
+    }
 })
 
 clear.addEventListener("click", () => {
@@ -382,10 +400,35 @@ dataToggle.addEventListener("click", () => {
 })
 
 window.addEventListener('keypress', (e) => {
+    e.preventDefault();
     let keyBoardWord = String.fromCharCode(e.which);
-    //鍵盤等於按鍵
-    if (e.which == 61||e.which == 13) {
+    //鍵盤等於按鍵 keycode: 13
+    if (e.which == 61 ||event.which == 13) {
+        dataEqual.setAttribute("aria-pressed", "true");
         calculator.equalTo();
+        for (let i = 0; i < 4; i++) {
+            opeButton[i].setAttribute("aria-pressed", "false");
+        }
+        for (let j = 0; j < 11; j++) {
+            numButton[j].setAttribute("aria-pressed", "false");
+        }
+    } 
+    else if (keyBoardWord > -1 && keyBoardWord < 11 && keyBoardWord != "\r") {
+        calculator.addNum(keyBoardWord);
+        curNum.innerText = calculator.cur;
+        for (let i = 0; i < 4; i++) {
+            opeButton[i].setAttribute("aria-pressed", "false");
+        }
+        dataEqual.setAttribute("aria-pressed", "false");
+        for (let j = 0; j < 11; j++) {
+            numButton[j].setAttribute("aria-pressed", "false");
+            if (numButton[j].value === keyBoardWord) {
+                numButton[j].setAttribute("aria-pressed", "true");
+            }
+        }
+        calculator.upDate();
+        preNum.innerText = calculator.addComma(preNum.innerText);
+        curNum.innerText = calculator.addComma(curNum.innerText);
     }
     else if (keyBoardWord == '.') {
         calculator.addNum(keyBoardWord);
@@ -399,36 +442,23 @@ window.addEventListener('keypress', (e) => {
         }
     }
     else if (e.which == 42 || e.which == 43 || e.which == 45 || e.which == 47) {
-        if (calculator.operator === undefined) {
-            calculator.operator = "";
-        }
         calculator.pressOperate(keyBoardWord);
-        if (calculator.pre === "") {
-            //show the minus sign
-            curNum.innerText = calculator.cur;
-        } else if (calculator.pre !== "" && calculator.savePre !== undefined && calculator.saveOpe !== undefined && calculator.savePre !== "" && calculator.saveOpe !== "") {
-            preNum.innerText = calculator.savePre + calculator.saveOpe + calculator.pre + calculator.operator;
-            curNum.innerText = "";
-        } else {
-            preNum.innerText = calculator.pre + calculator.operator;
-            curNum.innerText = calculator.cur;
-        }
+        calculator.opeButtonDisplay();
         for (let j = 0; j < 11; j++) {
             numButton[j].setAttribute("aria-pressed", "false");
         }
         dataEqual.setAttribute("aria-pressed", "false");
         for (let i = 0; i < 4; i++) {
-            opeButton[i].setAttribute("aria-pressed", "false");
             if (opeButton[i].value === e.key) {
                 opeButton[i].setAttribute("aria-pressed", "true");
             }
         }
+        dataEqual.setAttribute("aria-pressed", "false");
         preNum.innerText = calculator.addComma(preNum.innerText);
         curNum.innerText = calculator.addComma(curNum.innerText);
     }
 })
 
-const log = document.getElementById('log');
 document.addEventListener('keyup', (e) => {
     if (e.keyCode === 27) {
         calculator.clear();
