@@ -61,14 +61,12 @@ class Calculator {
 
 
     pressOperate(operator) {
+
         //after adding first operator
         if (this.cur === "" && this.operator === "" && operator === "-") {
             this.cur = "-" + "0";
             return;
-        } else if(this.cur === "" && this.operator === "" &&this.pre !== ""){
-            this.operator = operator; 
-            return ;
-        }else if (this.cur !== "") {
+        } else if (this.cur !== "") {
             this.cur = parseFloat(this.cur);
         }
 
@@ -115,7 +113,6 @@ class Calculator {
 
         }
         if (this.pre !== "" && this.cur === "" && isNaN(preNum.innerText[preNum.innerText.length - 1])) {
-            console.log("hello");
             this.pre = this.pre;
             if (preNum.innerText[preNum.innerText.length - 1] === "-" && (operator === "-" || this.operator === "-")) {
                 this.operator = "+";
@@ -150,28 +147,17 @@ class Calculator {
     }
 
     delete() {
-        if (curNum.innerText.includes(",")){
-            console.log("ff");
-            curNum.innerText= curNum.innerText.replaceAll(",", "");
-        } else if (curNum.innerText ==="" && this.operator=== ""&& preNum.innerText.includes(",")){
-            preNum.innerText= preNum.innerText.replaceAll(",", "");
-        }
-        console.log(this.operator);
-        if (curNum.innerText !== "") {
+        if (curNum.innerText !== "" && this.cur === "" && curNum.innerText !== "") {
+            if (curNum.innerText[curNum.innerText.length - 1] !== ",") {
+                this.pre = this.pre.toString().slice(0, -1);
+            }
+            curNum.innerText = curNum.innerText.toString().slice(0, -1);
+        } else if (curNum.innerText !== "") {
             if (curNum.innerText[curNum.innerText.length - 1] !== ",") {
                 this.cur = this.cur.toString().slice(0, -1);
             }
             curNum.innerText = curNum.innerText.toString().slice(0, -1);
-        } else if (curNum.innerText == "" && preNum.innerText !== "") {
-            if (preNum.innerText !== Number(preNum.innerText)){
-                this.operator="";
-            }
-            preNum.innerText = preNum.innerText.slice(0, -1);
-        } 
-        curNum.innerText = calculator.addComma(curNum.innerText);
-        preNum.innerText = calculator.addComma(preNum.innerText);
-        console.log("this.cur", this.cur, "this.pre", this.pre)
-        calculator.upDate();
+        }
     }
     toggle() {
         curNum.classList.toggle("negative");
@@ -293,7 +279,6 @@ opeButton.forEach(ope => {
     curNum.innerText = calculator.addComma(curNum.innerText);
 })
 
-//螢幕等於按鍵
 dataEqual.addEventListener("click", () => {
     if (preNum.innerText === "" && curNum.innerText !== "" && calculator.operator !== "" && calculator.saveContinue !== "") {
         if (calculator.pre !== "") {
@@ -361,7 +346,7 @@ dataDelete.addEventListener("click", () => {
             numButton[j].setAttribute("aria-pressed", "false");
         }
     }
-    calculator.upDate();
+    calculator.upDate()
 })
 
 dataToggle.addEventListener("click", () => {
@@ -374,14 +359,13 @@ dataToggle.addEventListener("click", () => {
     for (let j = 0; j < 11; j++) {
         numButton[j].setAttribute("aria-pressed", "false");
     }
-    calculator.upDate();
+    calculator.upDate()
 })
 
 window.addEventListener('keypress', (e) => {
     let keyBoardWord = String.fromCharCode(e.which);
-    //鍵盤等於按鍵
-    if (e.which == 61||e.which == 13) {
-        console.log("hh", e);
+
+    if (e.which == 61) {
         if (preNum.innerText === "" && curNum.innerText !== "" && calculator.operator !== "" && calculator.saveContinue !== "") {
             if (calculator.pre !== "") {
                 calculator.result = calculator.pre;
@@ -503,6 +487,6 @@ document.addEventListener('keyup', (e) => {
                 numButton[j].setAttribute("aria-pressed", "false");
             }
         }
-        calculator.upDate();
+        calculator.upDate()
     }
 })
