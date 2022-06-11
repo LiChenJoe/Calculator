@@ -1,0 +1,138 @@
+@import url("https://fonts.googleapis.com/css2?family=Amiri&family=Noto+Sans+TC&display=swap");
+* {
+  margin: 0;
+  padding: 0;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100vh;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  font-size: 12px;
+  font-family: 'Amiri', serif;
+  font-family: 'Noto Sans TC', sans-serif;
+}
+
+html {
+  background-color: #fefeca;
+}
+
+i {
+  pointer-events: none;
+}
+
+.outline {
+  min-width: 300px;
+  max-width: 320px;
+}
+
+.panel {
+  width: auto;
+  height: auto;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  min-height: 130px;
+  background-color: #232323;
+  color: azure;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  padding: 1rem;
+  border-radius: 8px 8px 0 0;
+  color: whitesmoke;
+}
+
+.panel .pre {
+  text-align: right;
+  width: 100%;
+  font-size: 2rem;
+}
+
+.panel .cur {
+  text-align: right;
+  width: 100%;
+  font-size: 4rem;
+}
+
+.row {
+  height: 7.5vh;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+button {
+  font-size: 2.2rem;
+  min-width: 80px;
+  padding: 3px;
+  border: 1px solid #CCC;
+}
+
+button[data-clear]:hover, button[data-delete]:hover, button[data-toggle]:hover {
+  background-color: #b2b1b1;
+  color: #282828;
+  text-decoration: none;
+  -webkit-transition: 1s;
+  transition: 1s;
+}
+
+button[aria-pressed="true"] {
+  background-color: #ffc677;
+  color: #282828;
+}
+
+button[data-num][aria-pressed="true"] {
+  background-color: #b2b1b1;
+  color: #282828;
+}
+
+.normal {
+  -webkit-box-flex: 1;
+      -ms-flex: 1 1 20%;
+          flex: 1 1 20%;
+  padding: 1rem;
+}
+
+.wide {
+  -webkit-box-flex: 2;
+      -ms-flex: 2 2 40%;
+          flex: 2 2 40%;
+  padding: 1rem;
+}
+
+.bottom-left {
+  border-radius: 0 0 0 8px;
+}
+
+.bottom-right {
+  border-radius: 0 0 8px 0;
+}
+
+.last {
+  background-color: #FF9500;
+  color: whitesmoke;
+}
+
+p {
+  font-size: 1rem;
+  position: absolute;
+  left: auto;
+  right: auto;
+  bottom: 1%;
+}
+/*# sourceMappingURL=style.css.map */
