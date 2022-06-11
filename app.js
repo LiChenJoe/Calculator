@@ -149,6 +149,50 @@ class Calculator {
         this.cur = parseFloat(eval(this.pre + this.operator + this.cur).toPrecision(12));
     }
 
+    equalTo(){
+        if (preNum.innerText === "" && curNum.innerText !== "" && calculator.operator !== "" && calculator.saveContinue !== "") {
+            if (calculator.pre !== "") {
+                calculator.result = calculator.pre;
+            }
+            if (calculator.saveContinueOperator === "") {
+                calculator.saveContinueOperator = calculator.operator;
+            }
+            calculator.result = parseFloat(eval(calculator.result + calculator.saveContinueOperator + calculator.saveContinue).toPrecision(12));
+            calculator.result = parseFloat(calculator.result);
+            curNum.innerText = calculator.result;
+            calculator.pre = "";
+            calculator.cur = calculator.result;
+            calculator.upDate();
+            preNum.innerText = calculator.addComma(preNum.innerText);
+            curNum.innerText = calculator.addComma(curNum.innerText);
+            return;
+        } else if (preNum.innerText === "" && curNum.innerText !== "" && calculator.operator === "" && calculator.saveContinue === "") {
+            return;
+        }
+    
+        calculator.pressOperate();
+        if (calculator.savePre !== undefined && calculator.saveOpe !== undefined && calculator.savePre !== "" && calculator.saveOpe !== "") {
+            calculator.operator = calculator.saveOpe;
+            calculator.pre = parseFloat(calculator.pre);
+            calculator.cur = calculator.pre;
+            calculator.pre = calculator.savePre;
+            calculator.compute();
+            calculator.pre = calculator.cur;
+        }
+        preNum.innerText = "";
+        curNum.innerText = parseFloat(calculator.pre);
+        for (let i = 0; i < 4; i++) {
+            opeButton[i].setAttribute("aria-pressed", "false");
+        }
+        for (let j = 0; j < 11; j++) {
+            numButton[j].setAttribute("aria-pressed", "false");
+        }
+        dataEqual.setAttribute("aria-pressed", "true");
+        calculator.upDate();
+        preNum.innerText = calculator.addComma(preNum.innerText);
+        curNum.innerText = calculator.addComma(curNum.innerText);
+    }
+
     delete() {
         if (curNum.innerText.includes(",")){
             console.log("ff");
@@ -295,47 +339,7 @@ opeButton.forEach(ope => {
 
 //螢幕等於按鍵
 dataEqual.addEventListener("click", () => {
-    if (preNum.innerText === "" && curNum.innerText !== "" && calculator.operator !== "" && calculator.saveContinue !== "") {
-        if (calculator.pre !== "") {
-            calculator.result = calculator.pre;
-        }
-        if (calculator.saveContinueOperator === "") {
-            calculator.saveContinueOperator = calculator.operator;
-        }
-        calculator.result = parseFloat(eval(calculator.result + calculator.saveContinueOperator + calculator.saveContinue).toPrecision(12));
-        calculator.result = parseFloat(calculator.result);
-        curNum.innerText = calculator.result;
-        calculator.pre = "";
-        calculator.cur = calculator.result;
-        calculator.upDate();
-        preNum.innerText = calculator.addComma(preNum.innerText);
-        curNum.innerText = calculator.addComma(curNum.innerText);
-        return;
-    } else if (preNum.innerText === "" && curNum.innerText !== "" && calculator.operator === "" && calculator.saveContinue === "") {
-        return;
-    }
-
-    calculator.pressOperate();
-    if (calculator.savePre !== undefined && calculator.saveOpe !== undefined && calculator.savePre !== "" && calculator.saveOpe !== "") {
-        calculator.operator = calculator.saveOpe;
-        calculator.pre = parseFloat(calculator.pre);
-        calculator.cur = calculator.pre;
-        calculator.pre = calculator.savePre;
-        calculator.compute();
-        calculator.pre = calculator.cur;
-    }
-    preNum.innerText = "";
-    curNum.innerText = parseFloat(calculator.pre);
-    for (let i = 0; i < 4; i++) {
-        opeButton[i].setAttribute("aria-pressed", "false");
-    }
-    for (let j = 0; j < 11; j++) {
-        numButton[j].setAttribute("aria-pressed", "false");
-    }
-    dataEqual.setAttribute("aria-pressed", "true");
-    calculator.upDate();
-    preNum.innerText = calculator.addComma(preNum.innerText);
-    curNum.innerText = calculator.addComma(curNum.innerText);
+    calculator.equalTo();
 })
 
 clear.addEventListener("click", () => {
@@ -381,63 +385,7 @@ window.addEventListener('keypress', (e) => {
     let keyBoardWord = String.fromCharCode(e.which);
     //鍵盤等於按鍵
     if (e.which == 61||e.which == 13) {
-        console.log("hh", e);
-        if (preNum.innerText === "" && curNum.innerText !== "" && calculator.operator !== "" && calculator.saveContinue !== "") {
-            if (calculator.pre !== "") {
-                calculator.result = calculator.pre;
-            }
-            if (calculator.saveContinueOperator === "") {
-                calculator.saveContinueOperator = calculator.operator;
-            }
-            calculator.result = parseFloat(eval(calculator.result + calculator.saveContinueOperator + calculator.saveContinue).toPrecision(12));
-            curNum.innerText = calculator.result;
-            calculator.pre = "";
-            calculator.cur = calculator.result;
-            calculator.upDate();
-            preNum.innerText = calculator.addComma(preNum.innerText);
-            curNum.innerText = calculator.addComma(curNum.innerText);
-            return;
-        } else if (preNum.innerText === "" && curNum.innerText !== "" && calculator.operator === "" && calculator.saveContinue === "") {
-            return;
-        }
-
-        calculator.pressOperate();
-        if (calculator.savePre !== undefined && calculator.saveOpe !== undefined && calculator.savePre !== "" && calculator.saveOpe !== "") {
-            calculator.operator = calculator.saveOpe;
-            calculator.cur = calculator.pre;
-            calculator.pre = calculator.savePre;
-            calculator.compute();
-            calculator.pre = calculator.cur;
-        }
-        preNum.innerText = "";
-        curNum.innerText = calculator.pre;
-        for (let i = 0; i < 4; i++) {
-            opeButton[i].setAttribute("aria-pressed", "false");
-        }
-        for (let j = 0; j < 11; j++) {
-            numButton[j].setAttribute("aria-pressed", "false");
-        }
-        dataEqual.setAttribute("aria-pressed", "true");
-        calculator.upDate();
-        preNum.innerText = calculator.addComma(preNum.innerText);
-        curNum.innerText = calculator.addComma(curNum.innerText);
-    } else if (keyBoardWord > -1 && keyBoardWord < 11 && keyBoardWord != "\r") {
-        calculator.addNum(keyBoardWord);
-        curNum.innerText = calculator.cur;
-        dataEqual.setAttribute("aria-pressed", "false");
-        for (let i = 0; i < 4; i++) {
-            opeButton[i].setAttribute("aria-pressed", "false");
-        }
-        dataEqual.setAttribute("aria-pressed", "false");
-        for (let j = 0; j < 11; j++) {
-            numButton[j].setAttribute("aria-pressed", "false");
-            if (numButton[j].value === keyBoardWord) {
-                numButton[j].setAttribute("aria-pressed", "true");
-            }
-        }
-        calculator.upDate();
-        preNum.innerText = calculator.addComma(preNum.innerText);
-        curNum.innerText = calculator.addComma(curNum.innerText);
+        calculator.equalTo();
     }
     else if (keyBoardWord == '.') {
         calculator.addNum(keyBoardWord);
