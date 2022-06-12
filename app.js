@@ -255,7 +255,6 @@ class Calculator {
         }
         curNum.innerText = this.cur;
         curNum.innerText = this.addComma(curNum.innerText);
-        console.log("b","this.pre", this.pre, "this.cur", this.cur,"curNum.innerText" , curNum.innerText, "preNum.innerText", preNum.innerText)
     }
 
     upDate() {
