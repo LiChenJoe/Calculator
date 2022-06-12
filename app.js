@@ -175,7 +175,6 @@ class Calculator {
     }
 
     equalTo(){
-        console.log("equal","this.pre",this.pre, "this.cur", this.cur, "preNum.innerText", preNum.innerText, "curNum.innerText", curNum.innerText );
         if (preNum.innerText === "" && curNum.innerText !== "" && this.operator !== "" && this.saveContinue !== "") {
             if (this.pre !== "") {
                 this.result = this.pre;
@@ -195,7 +194,6 @@ class Calculator {
         } else if (preNum.innerText === "" && curNum.innerText !== "" && this.operator === "" && this.saveContinue === "") {
             return;
         }
-        console.log("equal_2","this.pre",this.pre, "this.cur", this.cur, "preNum.innerText", preNum.innerText, "curNum.innerText", curNum.innerText );
         this.pressOperate(this.operator);
         if (this.savePre !== undefined && this.saveOpe !== undefined && this.savePre !== "" && this.saveOpe !== "") {
             this.operator = this.saveOpe;
@@ -206,18 +204,15 @@ class Calculator {
             this.compute();
             this.pre = this.cur;
         }
-        console.log("equal_3","this.pre",this.pre, "this.cur", this.cur, "preNum.innerText", preNum.innerText, "curNum.innerText", curNum.innerText );
         if (curNum.innerText !=="" && this.cur === "" && this.pre !== ""){
             this.operate = "";
             this.cur = this.pre;
             this.pre="";
         }
-        console.log("equal_4","this.pre",this.pre, "this.cur", this.cur, "preNum.innerText", preNum.innerText, "curNum.innerText", curNum.innerText );
         preNum.innerText = "";
         curNum.innerText = parseFloat(this.cur);
         this.upDate();
         curNum.innerText = this.addComma(curNum.innerText);
-        console.log("equal_5","this.pre",this.pre, "this.cur", this.cur, "preNum.innerText", preNum.innerText, "curNum.innerText", curNum.innerText );
     }
 
     delete() {
@@ -234,11 +229,9 @@ class Calculator {
         }
         curNum.innerText = this.addComma(curNum.innerText);
         this.upDate();
-        console.log("delete","this.pre",this.pre, "this.cur", this.cur, "preNum.innerText", preNum.innerText, "curNum.innerText", curNum.innerText );
     }
 
     toggle() {
-        console.log("this.pre", this.pre, "this.cur", this.cur,"curNum.innerText" , curNum.innerText, "preNum.innerText", preNum.innerText);
         curNum.classList.toggle("negative");
         
         if (this.cur > 0) {
