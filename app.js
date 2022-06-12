@@ -11,8 +11,6 @@ class Calculator {
         this.operator = "";
         this.saveOpe = "";
         this.savePre = "";
-        preNum.innerText = "";
-        curNum.innerText = "";
         this.saveContinue = "";
         this.saveContinueOperator = "";
     }
@@ -66,25 +64,29 @@ class Calculator {
 
 
     pressOperate(operator) {
-        if (calculator.operator === undefined) {
-            calculator.operator = "";
+        if (this.operator === undefined) {
+            this.operator = "";
         }
         //after adding first operator
-        if ((this.cur === "" || this.cur === "0" ) && this.operator === "" && operator === "-") {
-            this.cur = "-" + "0";
-            return;
-        } else if ((this.cur === "" || this.cur === "0" ) && this.operator === "" && (operator === "*" ||operator === "/" )){
-            this.cur = "0";
-            this.operator = operator;
-            return;
-        } else if ((this.cur === "" || this.cur === "0" ) && this.operator === "" && operator === "+"){
-            this.cur = "0";
-        } else if (this.cur !== "") {
-            this.cur = parseFloat(this.cur);
-        } 
+        if (this.pre === "0" ||this.pre === ""){
+            if ((this.cur === "" || this.cur === "0" ) && this.operator === "" && operator === "-") {
+                this.cur = "-" + "0";
+                return;
+            } else if ((this.cur === "" || this.cur === "0" ) && this.operator === "" && (operator === "*" ||operator === "/" )){    
+                this.cur = "0";
+            } else if ((this.cur === "" || this.cur === "0" ) && this.operator === "" && operator === "+"){
+                this.cur = "0";
+            } else if (this.cur !== "") {
+                this.cur = parseFloat(this.cur);
+            } 
+        } else {
+             //after adding second number
 
-        //after adding second number
-        if (this.pre !== "" && this.cur !== "" && this.operator !== "") {
+        if (this.cur === "" && this.operator === "") {
+            this.operator=operator;
+            return;
+        }
+        if (this.cur !== "" && this.operator !== "") {
 
             this.saveContinue = parseFloat((this.cur));
             //aa+(bb*cc)
@@ -105,8 +107,8 @@ class Calculator {
                 } else {
                     this.compute();
                 }
-                this.saveOpe = undefined;
-                this.savePre = undefined;
+                this.saveOpe = 0;
+                this.savePre = 0;
             } else if (preNum.innerText[preNum.innerText.length - 1] === "-" && (this.operator === "+") && this.cur < 0) {
                 this.pre = Number(this.pre) + Number(this.cur);
                 this.pre = parseFloat(this.pre);
@@ -120,13 +122,12 @@ class Calculator {
                 this.operator = this.saveOpe;
                 this.pre = this.savePre;
                 this.compute();
-                this.saveOpe = undefined;
-                this.savePre = undefined;
+                this.saveOpe = 0;
+                this.savePre = 0;
             }
 
         }
-        if (this.pre !== "" && this.cur === "" && isNaN(preNum.innerText[preNum.innerText.length - 1])) {
-            this.pre = this.pre;
+        if (this.cur === "" && isNaN(preNum.innerText[preNum.innerText.length - 1])) {
             if (preNum.innerText[preNum.innerText.length - 1] === "-" && (operator === "-" || this.operator === "-")) {
                 this.operator = "+";
                 operator = "";
@@ -139,9 +140,10 @@ class Calculator {
                 operator = "";
                 this.cur = "";
             }
-
             return;
         }
+        }
+       
         // adding negative number after second sign
         if (this.cur === "" && this.operator !== "" && operator === "-") {
             this.cur = operator;
@@ -156,15 +158,15 @@ class Calculator {
     }
 
     opeButtonDisplay(){
-        if (calculator.pre === "") {
+        if (this.pre === "") {
             //show the minus sign
-            curNum.innerText = calculator.cur;
-        } else if (calculator.pre !== "" && calculator.savePre !== undefined && calculator.saveOpe !== undefined && calculator.savePre !== "" && calculator.saveOpe !== "") {
-            preNum.innerText = calculator.savePre + calculator.saveOpe + calculator.pre + calculator.operator;
+            curNum.innerText = this.cur;
+        } else if (this.pre !== "" && this.savePre !== undefined && this.saveOpe !== undefined && this.savePre !== "" && this.saveOpe !== "") {
+            preNum.innerText = this.savePre + this.saveOpe + this.pre + this.operator;
             curNum.innerText = "";
         } else {
-            preNum.innerText = calculator.pre + calculator.operator;
-            curNum.innerText = calculator.cur;
+            preNum.innerText = this.pre + this.operator;
+            curNum.innerText = this.cur;
         }
     }
 
@@ -173,39 +175,49 @@ class Calculator {
     }
 
     equalTo(){
-        if (preNum.innerText === "" && curNum.innerText !== "" && calculator.operator !== "" && calculator.saveContinue !== "") {
-            if (calculator.pre !== "") {
-                calculator.result = calculator.pre;
+        console.log("equal","this.pre",this.pre, "this.cur", this.cur, "preNum.innerText", preNum.innerText, "curNum.innerText", curNum.innerText );
+        if (preNum.innerText === "" && curNum.innerText !== "" && this.operator !== "" && this.saveContinue !== "") {
+            if (this.pre !== "") {
+                this.result = this.pre;
             }
-            if (calculator.saveContinueOperator === "") {
-                calculator.saveContinueOperator = calculator.operator;
+            if (this.saveContinueOperator === "") {
+                this.saveContinueOperator = this.operator;
             }
-            calculator.result = parseFloat(eval(calculator.result + calculator.saveContinueOperator + calculator.saveContinue).toPrecision(12));
-            calculator.result = parseFloat(calculator.result);
-            curNum.innerText = calculator.result;
-            calculator.pre = "";
-            calculator.cur = calculator.result;
-            calculator.upDate();
-            preNum.innerText = calculator.addComma(preNum.innerText);
-            curNum.innerText = calculator.addComma(curNum.innerText);
+            this.result = parseFloat(eval(this.result + this.saveContinueOperator + this.saveContinue).toPrecision(12));
+            this.result = parseFloat(this.result);
+            curNum.innerText = this.result;
+            this.pre = "";
+            this.cur = this.result;
+            this.upDate();
+            preNum.innerText = this.addComma(preNum.innerText);
+            curNum.innerText = this.addComma(curNum.innerText);
             return;
-        } else if (preNum.innerText === "" && curNum.innerText !== "" && calculator.operator === "" && calculator.saveContinue === "") {
+        } else if (preNum.innerText === "" && curNum.innerText !== "" && this.operator === "" && this.saveContinue === "") {
             return;
         }
-        calculator.pressOperate(this.operator);
-        if (calculator.savePre !== undefined && calculator.saveOpe !== undefined && calculator.savePre !== "" && calculator.saveOpe !== "") {
-            calculator.operator = calculator.saveOpe;
-            calculator.pre = parseFloat(calculator.pre);
-            calculator.cur = calculator.pre;
-            calculator.pre = calculator.savePre;
-            calculator.compute();
-            calculator.pre = calculator.cur;
+        console.log("equal_2","this.pre",this.pre, "this.cur", this.cur, "preNum.innerText", preNum.innerText, "curNum.innerText", curNum.innerText );
+        this.pressOperate(this.operator);
+        if (this.savePre !== undefined && this.saveOpe !== undefined && this.savePre !== "" && this.saveOpe !== "") {
+            this.operator = this.saveOpe;
+            this.pre = parseFloat(this.pre);
+            this.cur = this.pre;
+            this.pre = this.savePre;
+            this.savePre = "";
+            this.compute();
+            this.pre = this.cur;
         }
+        console.log("equal_3","this.pre",this.pre, "this.cur", this.cur, "preNum.innerText", preNum.innerText, "curNum.innerText", curNum.innerText );
+        if (curNum.innerText !=="" && this.cur === "" && this.pre !== ""){
+            this.operate = "";
+            this.cur = this.pre;
+            this.pre="";
+        }
+        console.log("equal_4","this.pre",this.pre, "this.cur", this.cur, "preNum.innerText", preNum.innerText, "curNum.innerText", curNum.innerText );
         preNum.innerText = "";
-        curNum.innerText = parseFloat(calculator.pre);
-        calculator.upDate();
-        preNum.innerText = calculator.addComma(preNum.innerText);
-        curNum.innerText = calculator.addComma(curNum.innerText);
+        curNum.innerText = parseFloat(this.cur);
+        this.upDate();
+        curNum.innerText = this.addComma(curNum.innerText);
+        console.log("equal_5","this.pre",this.pre, "this.cur", this.cur, "preNum.innerText", preNum.innerText, "curNum.innerText", curNum.innerText );
     }
 
     delete() {
@@ -217,30 +229,18 @@ class Calculator {
         if (curNum.innerText !== "") {
             if (curNum.innerText[curNum.innerText.length - 1] !== ",") {
                 this.cur = this.cur.toString().slice(0, -1);
-            }
+            };
             curNum.innerText = curNum.innerText.toString().slice(0, -1);
-        } else if (curNum.innerText == "" && preNum.innerText !== "") {
-            if (preNum.innerText !== Number(preNum.innerText)){
-                this.operator="";
-            }
-            preNum.innerText = preNum.innerText.slice(0, -1);
-            if (preNum.innerText.toString().slice(-1) ==="." ){
-                preNum.innerText = preNum.innerText.slice(0, -1);
-                console.log("s");
-            }
-        } 
-        curNum.innerText = calculator.addComma(curNum.innerText);
-        preNum.innerText = calculator.addComma(preNum.innerText);
-        calculator.upDate();
+        }
+        curNum.innerText = this.addComma(curNum.innerText);
+        this.upDate();
+        console.log("delete","this.pre",this.pre, "this.cur", this.cur, "preNum.innerText", preNum.innerText, "curNum.innerText", curNum.innerText );
     }
 
     toggle() {
+        console.log("this.pre", this.pre, "this.cur", this.cur,"curNum.innerText" , curNum.innerText, "preNum.innerText", preNum.innerText);
         curNum.classList.toggle("negative");
-        if (this.cur === "" && (this.pre !== "")){
-            this.operate = "";
-            this.cur = this.pre;
-            this.pre="";
-        }
+        
         if (this.cur > 0) {
             this.cur = -this.cur;
         } else if (this.cur < 0) {
@@ -261,8 +261,8 @@ class Calculator {
             this.cur = -this.cur;
         }
         curNum.innerText = this.cur;
-        curNum.innerText = calculator.addComma(curNum.innerText);
-        
+        curNum.innerText = this.addComma(curNum.innerText);
+        console.log("b","this.pre", this.pre, "this.cur", this.cur,"curNum.innerText" , curNum.innerText, "preNum.innerText", preNum.innerText)
     }
 
     upDate() {
